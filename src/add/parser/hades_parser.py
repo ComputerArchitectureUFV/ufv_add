@@ -53,7 +53,7 @@ def get_components(hds_string):
                 const = tokens[len(tokens)-2]
             else:
                 const = 0
-            map_values = {'operator': 'hebe_'+op, 'type': tipo, 'data_width': data_width, 'const': const,
+            map_values = {'operator': 'add_'+op, 'type': tipo, 'data_width': data_width, 'const': const,
                           'con': []}
             componentes[inst_name] = map_values
         elif state == getsignals:
