@@ -1,0 +1,22 @@
+# hades.models.Design file
+#  
+[name] example
+[components]
+hebe.dataflow.sync.SUB sub1 1800 -1800 @N 1001 16 1.0E-8
+hades.models.io.ClockGen clock -7800 -2400 @N 1001 0.1 0.5 0.0 
+hebe.dataflow.sync.OUT out 4800 0 @N 1001 16 1.0E-8
+hades.models.io.Ipin reset -4800 4800 @N 1001  1
+hebe.dataflow.sync.IN_2 in -4200 -2400 @N 1001 16 1.0E-8
+[end components]
+[signals]
+hades.signals.SignalStdLogicVector w6 16 2 in D_OUT2 sub1 D_IN2 0 0 
+hades.signals.SignalStdLogic1164 wclk 4 clock clk in CLK sub1 CLK out CLK 0 0 
+hades.signals.SignalStdLogic1164 w5 2 in R_OUT2 sub1 R_IN2 0 0 
+hades.signals.SignalStdLogicVector w4 16 2 in D_OUT1 sub1 D_IN1 0 0 
+hades.signals.SignalStdLogic1164 w3 2 in R_OUT1 sub1 R_IN1 0 0 
+hades.signals.SignalStdLogicVector w2 16 2 sub1 D_OUT out D_IN 0 0 
+hades.signals.SignalStdLogic1164 w1 2 sub1 R_OUT out R_IN 0 0 
+hades.signals.SignalStdLogic1164 w0 4 in EN_OUT in EN sub1 EN out EN 0 0 
+hades.signals.SignalStdLogic1164 wrst 4 reset Y in RST sub1 RST out RST 0 0 
+[end signals]
+[end]

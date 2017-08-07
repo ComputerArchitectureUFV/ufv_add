@@ -1,0 +1,43 @@
+# hades.models.Design file
+#
+[name] example
+[components]
+hades.models.io.ClockGen clock -4800 -2400 @N 1001 1.0 0.5 0.0 null
+hades.models.io.Ipin reset -4800 4800 @N 1001 null 1
+add.dataflow.sync.In1 in  0 0 @N 1001 16 1.0E-8 n
+add.dataflow.sync.MulI muli1  2400 0 @N 1001 16 1 1.0E-8 i
+add.dataflow.sync.MulI muli2  4800 0 @N 1001 16 2 1.0E-8 i
+add.dataflow.sync.MulI muli3  7200 0 @N 1001 16 3 1.0E-8 i
+add.dataflow.sync.MulI muli4  9600 0 @N 1001 16 4 1.0E-8 i
+add.dataflow.sync.Register reg1  12000 0 @N 1001 16 1.0E-8 u
+add.dataflow.sync.Add add1  14400 0 @N 1001 16 1.0E-8 u
+add.dataflow.sync.Add add2  16800 0 @N 1001 16 1.0E-8 u
+add.dataflow.sync.Add add3  19200 0 @N 1001 16 1.0E-8 u
+add.dataflow.sync.Out1 out  21600 0 @N 1001 16 1.0E-8 n
+[end components]
+[signals]
+hades.signals.SignalStdLogic1164 wrdy 2 in rdy out rdy 0 0
+hades.signals.SignalStdLogic1164 wclk 11 clock clk in clk muli1 clk muli2 clk muli3 clk muli4 clk reg1 clk add1 clk add2 clk add3 clk out clk  0 0
+hades.signals.SignalStdLogic1164 wrst 11 reset Y in rst muli1 rst muli2 rst muli3 rst muli4 rst reg1 rst add1 rst add2 rst add3 rst out rst  0 0
+hades.signals.SignalStdLogic1164 wen 10 in en muli1 en muli2 en muli3 en muli4 en reg1 en add1 en add2 en add3 en out en 0 0
+hades.signals.SignalStdLogicVector w0 32 5 in dconf muli1 dconf muli2 dconf muli3 dconf muli4 dconf  0 0
+hades.signals.SignalStdLogicVector w1 16 5 in dout1 muli1 din muli2 din muli3 din muli4 din  0 0
+hades.signals.SignalStdLogic1164 w2 5 in rout1 muli1 rin muli2 rin muli3 rin muli4 rin  0 0
+hades.signals.SignalStdLogic1164 w3 2 muli1 rout reg1 rin 0 0
+hades.signals.SignalStdLogicVector w4 16 2 muli1 dout reg1 din 0 0
+hades.signals.SignalStdLogic1164 w5 2 muli2 rout add1 rin2 0 0
+hades.signals.SignalStdLogicVector w6 16 2 muli2 dout add1 din2 0 0
+hades.signals.SignalStdLogic1164 w7 2 muli3 rout add2 rin2 0 0
+hades.signals.SignalStdLogicVector w8 16 2 muli3 dout add2 din2 0 0
+hades.signals.SignalStdLogic1164 w9 2 muli4 rout add3 rin2 0 0
+hades.signals.SignalStdLogicVector w10 16 2 muli4 dout add3 din2 0 0
+hades.signals.SignalStdLogic1164 w11 2 reg1 rout add1 rin1 0 0
+hades.signals.SignalStdLogicVector w12 16 2 reg1 dout add1 din1 0 0
+hades.signals.SignalStdLogic1164 w13 2 add1 rout add2 rin1 0 0
+hades.signals.SignalStdLogicVector w14 16 2 add1 dout add2 din1 0 0
+hades.signals.SignalStdLogic1164 w15 2 add2 rout add3 rin1 0 0
+hades.signals.SignalStdLogicVector w16 16 2 add2 dout add3 din1 0 0
+hades.signals.SignalStdLogic1164 w17 2 add3 rout out rin1 0 0
+hades.signals.SignalStdLogicVector w18 16 2 add3 dout out din1 0 0
+[end signals]
+[end]

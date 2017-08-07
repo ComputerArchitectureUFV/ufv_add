@@ -1,0 +1,15 @@
+0c//TAMANHO DO VETOR DE DADOS + CONFIGURAÇÕES //Protocolo para o funcionamento em Hardware //VALORES EM HEXADECIMAL
+01////tamanho fifo_out
+01//tamanho fifo_in
+04//início dos dados e CONFIGURAÇÕES - QUANTIDADE DE CONFIGURAÇÕES
+00000201//1ª CONFIGURAÇÃO - 32 bits -> {IMEDIATO(24bits), ID(8bits)} - nesse caso ID 1 e IMEDIATO 2 = 0x00000201 
+00000202//2ª CONFIGURAÇÃO - 32 bits -> {IMEDIATO(24bits), ID(8bits)} - nesse caso ID 2 e IMEDIATO 2 = 0x00000202 
+00000303//3ª CONFIGURAÇÃO - 32 bits -> {IMEDIATO(24bits), ID(8bits)} - nesse caso ID 3 e IMEDIATO 3 = 0x00000303 
+00000004//4ª CONFIGURAÇÃO - 32 bits -> {IMEDIATO(24bits), ID(8bits)} - nesse caso ID 4 e IMEDIATO 0 = 0x00000004 
+00//
+01//
+02//
+03//
+04//
+05//
+06//fim dos dados

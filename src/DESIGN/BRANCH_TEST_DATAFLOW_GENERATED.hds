@@ -1,0 +1,38 @@
+# hades.models.Design file
+#
+[name] example
+[components]
+hades.models.io.ClockGen clock -4800 -2400 @N 1001 1.0 0.5 0.0 null
+hades.models.io.Ipin reset -4800 4800 @N 1001 null 1
+add.dataflow.sync.In1 in  0 0 @N 1001 16 1.0E-8 n
+add.dataflow.sync.ModI modi1  2400 0 @N 1001 16 1 1.0E-8 i
+add.dataflow.sync.MulI muli1  4800 0 @N 1001 16 2 1.0E-8 i
+add.dataflow.sync.MulI muli2  7200 0 @N 1001 16 3 1.0E-8 i
+add.dataflow.sync.BeqI beqi1  9600 0 @N 1001 16 4 1.0E-8 i
+add.dataflow.sync.Register reg1  12000 0 @N 1001 16 1.0E-8 u
+add.dataflow.sync.Register reg2  14400 0 @N 1001 16 1.0E-8 u
+add.dataflow.sync.Merge merge1  16800 0 @N 1001 16 1.0E-8 b
+add.dataflow.sync.Out1 out  19200 0 @N 1001 16 1.0E-8 n
+[end components]
+[signals]
+hades.signals.SignalStdLogic1164 wrdy 2 in rdy out rdy 0 0
+hades.signals.SignalStdLogic1164 wclk 10 clock clk in clk modi1 clk muli1 clk muli2 clk beqi1 clk reg1 clk reg2 clk merge1 clk out clk  0 0
+hades.signals.SignalStdLogic1164 wrst 10 reset Y in rst modi1 rst muli1 rst muli2 rst beqi1 rst reg1 rst reg2 rst merge1 rst out rst  0 0
+hades.signals.SignalStdLogic1164 wen 9 in en modi1 en muli1 en muli2 en beqi1 en reg1 en reg2 en merge1 en out en 0 0
+hades.signals.SignalStdLogicVector w0 32 5 in dconf modi1 dconf muli1 dconf muli2 dconf beqi1 dconf  0 0
+hades.signals.SignalStdLogicVector w1 16 4 in dout1 modi1 din muli1 din muli2 din  0 0
+hades.signals.SignalStdLogic1164 w2 4 in rout1 modi1 rin muli1 rin muli2 rin  0 0
+hades.signals.SignalStdLogic1164 w3 2 modi1 rout beqi1 rin 0 0
+hades.signals.SignalStdLogicVector w4 16 2 modi1 dout beqi1 din 0 0
+hades.signals.SignalStdLogic1164 w5 2 muli1 rout reg1 rin 0 0
+hades.signals.SignalStdLogicVector w6 16 2 muli1 dout reg1 din 0 0
+hades.signals.SignalStdLogic1164 w7 2 muli2 rout reg2 rin 0 0
+hades.signals.SignalStdLogicVector w8 16 2 muli2 dout reg2 din 0 0
+hades.signals.SignalStdLogic1164 w9 2 beqi1 if merge1 rin1 0 0
+hades.signals.SignalStdLogic1164 w10 2 beqi1 else merge1 rin2 0 0
+hades.signals.SignalStdLogicVector w11 16 2 reg1 dout merge1 din1 0 0
+hades.signals.SignalStdLogicVector w12 16 2 reg2 dout merge1 din2 0 0
+hades.signals.SignalStdLogic1164 w13 2 merge1 rout out rin1 0 0
+hades.signals.SignalStdLogicVector w14 16 2 merge1 dout out din1 0 0
+[end signals]
+[end]

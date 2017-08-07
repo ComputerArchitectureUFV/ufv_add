@@ -1,0 +1,44 @@
+# hades.models.Design file
+#
+[name] example
+[components]
+hades.models.io.ClockGen clock -4800 -2400 @N 1001 1.0 0.5 0.0 null
+hades.models.io.Ipin reset -4800 4800 @N 1001 null 1
+add.dataflow.sync.In8 in  0 0 @N 1001 16 1.0E-8 n
+add.dataflow.sync.Sub sub1  2400 0 @N 1001 16 1.0E-8 b
+add.dataflow.sync.Sub sub2  4800 0 @N 1001 16 1.0E-8 b
+add.dataflow.sync.Sub sub3  7200 0 @N 1001 16 1.0E-8 b
+add.dataflow.sync.Sub sub4  9600 0 @N 1001 16 1.0E-8 b
+add.dataflow.sync.Out4 out  12000 0 @N 1001 16 1.0E-8 n
+[end components]
+[signals]
+hades.signals.SignalStdLogic1164 wrdy 2 in rdy out rdy 0 0
+hades.signals.SignalStdLogic1164 wclk 7 clock clk in clk sub1 clk sub2 clk sub3 clk sub4 clk out clk  0 0
+hades.signals.SignalStdLogic1164 wrst 7 reset Y in rst sub1 rst sub2 rst sub3 rst sub4 rst out rst  0 0
+hades.signals.SignalStdLogic1164 wen 6 in en sub1 en sub2 en sub3 en sub4 en out en 0 0
+hades.signals.SignalStdLogic1164 w0 2 sub1 rout out rin1 0 0
+hades.signals.SignalStdLogicVector w1 16 2 sub1 dout out din1 0 0
+hades.signals.SignalStdLogic1164 w2 2 sub2 rout out rin2 0 0
+hades.signals.SignalStdLogicVector w3 16 2 sub2 dout out din2 0 0
+hades.signals.SignalStdLogic1164 w4 2 sub3 rout out rin3 0 0
+hades.signals.SignalStdLogicVector w5 16 2 sub3 dout out din3 0 0
+hades.signals.SignalStdLogic1164 w6 2 sub4 rout out rin4 0 0
+hades.signals.SignalStdLogicVector w7 16 2 sub4 dout out din4 0 0
+hades.signals.SignalStdLogic1164 w8 2 in rout1 sub1 rin1 0 0
+hades.signals.SignalStdLogicVector w9 16 2 in dout1 sub1 din1 0 0
+hades.signals.SignalStdLogic1164 w10 2 in rout2 sub1 rin2 0 0
+hades.signals.SignalStdLogicVector w11 16 2 in dout2 sub1 din2 0 0
+hades.signals.SignalStdLogic1164 w12 2 in rout3 sub2 rin1 0 0
+hades.signals.SignalStdLogicVector w13 16 2 in dout3 sub2 din1 0 0
+hades.signals.SignalStdLogic1164 w14 2 in rout4 sub2 rin2 0 0
+hades.signals.SignalStdLogicVector w15 16 2 in dout4 sub2 din2 0 0
+hades.signals.SignalStdLogic1164 w16 2 in rout5 sub3 rin1 0 0
+hades.signals.SignalStdLogicVector w17 16 2 in dout5 sub3 din1 0 0
+hades.signals.SignalStdLogic1164 w18 2 in rout6 sub3 rin2 0 0
+hades.signals.SignalStdLogicVector w19 16 2 in dout6 sub3 din2 0 0
+hades.signals.SignalStdLogic1164 w20 2 in rout7 sub4 rin1 0 0
+hades.signals.SignalStdLogicVector w21 16 2 in dout7 sub4 din1 0 0
+hades.signals.SignalStdLogic1164 w22 2 in rout8 sub4 rin2 0 0
+hades.signals.SignalStdLogicVector w23 16 2 in dout8 sub4 din2 0 0
+[end signals]
+[end]

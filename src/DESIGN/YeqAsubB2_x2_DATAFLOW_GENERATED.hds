@@ -1,0 +1,30 @@
+# hades.models.Design file
+#
+[name] example
+[components]
+hades.models.io.ClockGen clock -4800 -2400 @N 1001 1.0 0.5 0.0 null
+hades.models.io.Ipin reset -4800 4800 @N 1001 null 1
+add.dataflow.sync.In4 in  0 0 @N 1001 16 1.0E-8 n
+add.dataflow.sync.Sub sub1  2400 0 @N 1001 16 1.0E-8 b
+add.dataflow.sync.Sub sub2  4800 0 @N 1001 16 1.0E-8 b
+add.dataflow.sync.Out2 out  7200 0 @N 1001 16 1.0E-8 n
+[end components]
+[signals]
+hades.signals.SignalStdLogic1164 wrdy 2 in rdy out rdy 0 0
+hades.signals.SignalStdLogic1164 wclk 5 clock clk in clk sub1 clk sub2 clk out clk  0 0
+hades.signals.SignalStdLogic1164 wrst 5 reset Y in rst sub1 rst sub2 rst out rst  0 0
+hades.signals.SignalStdLogic1164 wen 4 in en sub1 en sub2 en out en 0 0
+hades.signals.SignalStdLogic1164 w0 2 sub1 rout out rin1 0 0
+hades.signals.SignalStdLogicVector w1 16 2 sub1 dout out din1 0 0
+hades.signals.SignalStdLogic1164 w2 2 sub2 rout out rin2 0 0
+hades.signals.SignalStdLogicVector w3 16 2 sub2 dout out din2 0 0
+hades.signals.SignalStdLogic1164 w4 2 in rout1 sub1 rin1 0 0
+hades.signals.SignalStdLogicVector w5 16 2 in dout1 sub1 din1 0 0
+hades.signals.SignalStdLogic1164 w6 2 in rout2 sub1 rin2 0 0
+hades.signals.SignalStdLogicVector w7 16 2 in dout2 sub1 din2 0 0
+hades.signals.SignalStdLogic1164 w8 2 in rout3 sub2 rin1 0 0
+hades.signals.SignalStdLogicVector w9 16 2 in dout3 sub2 din1 0 0
+hades.signals.SignalStdLogic1164 w10 2 in rout4 sub2 rin2 0 0
+hades.signals.SignalStdLogicVector w11 16 2 in dout4 sub2 din2 0 0
+[end signals]
+[end]

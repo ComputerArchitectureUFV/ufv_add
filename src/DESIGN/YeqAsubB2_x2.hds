@@ -1,0 +1,30 @@
+# hades.models.Design file
+#  
+[name] example
+[components]
+add.dataflow.sync.Sub sub2 3600 5400 @N 1001 16 1.0E-8 b
+add.dataflow.sync.Sub sub1 3600 0 @N 1001 16 1.0E-8 b
+hades.models.io.ClockGen clock -5400 7800 @N 1001 1.0 0.5 0.0 null
+add.dataflow.sync.Out2 out 9000 0 @N 1001 16 1.0E-8 2 n
+hades.models.io.Ipin reset -3000 10800 @N 1001 null 1
+add.dataflow.sync.In4 in -1200 0 @N 1001 16 1.0E-8 4 n
+[end components]
+[signals]
+hades.signals.SignalStdLogicVector n9 16 2 sub1 dout out din1 1 2 9000 1200 5400 1200 0 
+hades.signals.SignalStdLogic1164 n8 2 sub1 rout out rin1 1 2 5400 600 9000 600 0 
+hades.signals.SignalStdLogicVector n7 16 2 in dout4 sub2 din2 3 2 3600 7800 1200 7800 2 1200 7800 1200 4800 2 1200 4800 600 4800 0 
+hades.signals.SignalStdLogic1164 n6 2 in rout4 sub2 rin2 3 2 600 4200 1800 4200 2 1800 4200 1800 7200 2 1800 7200 3600 7200 0 
+hades.signals.SignalStdLogicVector n5 16 2 in dout3 sub2 din1 3 2 3600 6600 2400 6600 2 2400 6600 2400 3600 2 2400 3600 600 3600 0 
+hades.signals.SignalStdLogic1164 n4 2 in rout3 sub2 rin1 3 2 600 3000 3000 3000 2 3000 3000 3000 6000 2 3000 6000 3600 6000 0 
+hades.signals.SignalStdLogicVector n3 16 2 in dout2 sub1 din2 1 2 600 2400 3600 2400 0 
+hades.signals.SignalStdLogic1164 n2 2 in rout2 sub1 rin2 1 2 3600 1800 600 1800 0 
+hades.signals.SignalStdLogic1164 n15 2 out rin2 sub2 rout 3 2 9000 1800 7800 1800 2 7800 1800 7800 6000 2 7800 6000 5400 6000 0 
+hades.signals.SignalStdLogicVector n1 16 2 in dout1 sub1 din1 1 2 600 1200 3600 1200 0 
+hades.signals.SignalStdLogic1164 clkwire 5 clock clk out clk in clk sub2 clk sub1 clk 9 2 10200 3000 10200 9000 2 10200 9000 6600 9000 2 0 5400 0 9000 2 4800 8400 4800 9000 2 6600 9000 6600 4800 2 6600 4800 4800 3000 2 6600 9000 4800 9000 2 -3000 9000 0 9000 2 4800 9000 0 9000 3 6600 9000 0 9000 4800 9000 
+hades.signals.SignalStdLogic1164 n0 2 in rout1 sub1 rin1 1 2 3600 600 600 600 0 
+hades.signals.SignalStdLogic1164 rdywire 2 out rdy in rdy 3 2 10200 0 10200 -1800 2 10200 -1800 0 -1800 2 0 -1800 0 0 0 
+hades.signals.SignalStdLogic1164 enwire 4 in en out en sub1 en sub2 en 9 2 9600 0 9600 -1200 2 9600 -1200 7200 -1200 2 4200 0 4200 -1200 2 4200 5400 4200 4200 2 4200 4200 7200 4200 2 7200 4200 7200 -1200 2 -600 -1200 -600 0 2 7200 -1200 4200 -1200 2 -600 -1200 4200 -1200 2 4200 -1200 7200 -1200 
+hades.signals.SignalStdLogic1164 rstwire 5 reset Y in rst sub2 rst out rst sub1 rst 9 2 -600 5400 -600 10800 2 4200 8400 4200 10800 2 9600 3000 9600 10800 2 9600 10800 6000 10800 2 4200 3000 6000 4800 2 6000 4800 6000 10800 2 6000 10800 4200 10800 2 -3000 10800 -600 10800 2 4200 10800 -600 10800 3 -600 10800 4200 10800 6000 10800 
+hades.signals.SignalStdLogicVector n10 16 2 sub2 dout out din2 3 2 9000 2400 8400 2400 2 8400 2400 8400 6600 2 8400 6600 5400 6600 0 
+[end signals]
+[end]
