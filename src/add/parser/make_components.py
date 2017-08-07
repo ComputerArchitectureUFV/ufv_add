@@ -43,6 +43,7 @@ def make_component_in(name, num_ports, data_width, data_width_ext):
     wconf = m.Wire('wconf', 32, data_width_ext // (32))
     i = m.Genvar('i')
     m.GenerateFor(i(0), i < (data_width_ext // (data_width * num_ports)), i.inc(), 'gen_1').Assign(
+        # modificação para "data_width * num_ports" pois vai alterar o número de bits com o número de portas não é?
         wdata[i](data[i * (data_width * num_ports):((i * (data_width * num_ports)) + (data_width * num_ports))])
     )
 
@@ -65,7 +66,7 @@ def make_component_in(name, num_ports, data_width, data_width_ext):
         If(rst)(
             req_rd_data(Int(0, 1, 2)),
             dconf(Int(0, dconf.width, 10)),
-            index_conf(Int(0, 4, 10)),  
+            index_conf(Int(0, 4, 10)),  # sempre terá o tamanho 4 bits pois contará até no máximo 16
             index_data(Int(0, index_data.width, 10)),
             data(Int(0, data.width, 10)),
             data_out(Int(0, data_out.width, 10)),
@@ -93,16 +94,16 @@ def make_component_in(name, num_ports, data_width, data_width_ext):
                     )
                 ),
                 When(FSM_RD_DATA)(
-                    If(cont_conf < num_conf)(  
+                    If(cont_conf < num_conf)(  # a parte de configuração foi toda alterada
                         If(index_conf < (data_width_ext // (32)) - 1)(
                             If(flag_cpy_data == Int(0, 1, 2))(
                                 data(rd_data),
                                 flag_cpy_data(Int(1, 1, 2)),
-                                dconf(rd_data[0:32]), 
+                                dconf(rd_data[0:32]),  # sempre é 32 bits
                                 cont_conf.inc(),
                                 index_conf.inc(),
                             ).Else(
-                                dconf(wconf[index_conf]),  
+                                dconf(wconf[index_conf]),  # vai dar problema pois aqui sempre é 32.
                                 cont_conf.inc(),
                                 index_conf.inc(),
                             ),
@@ -120,10 +121,11 @@ def make_component_in(name, num_ports, data_width, data_width_ext):
                             )
                         )
                     ).Elif(cont_data < (num_data / num_ports))(
+                        # Alteração no if para que fique de acordo com a qtde de portas
                         If(index_data < (data_width_ext // (data_width * num_ports)) - 1)(
                             If(flag_cpy_data == Int(0, 1, 2))(
                                 data(rd_data),
-                                data_out(rd_data[0:(data_width * num_ports)]),
+                                data_out(rd_data[0:(data_width * num_ports)]),  # alteração no tamanho do barramento
                                 flag_cpy_data(Int(1, 1, 2))
                             ).Else(
                                 data_out(wdata[index_data]),
@@ -222,7 +224,7 @@ def make_component_in32(name, num_ports, data_width, data_width_ext):
         If(rst)(
             req_rd_data(Int(0, 1, 2)),
             dconf(Int(0, dconf.width, 10)),
-            index_conf(Int(0, 4, 10)),  
+            index_conf(Int(0, 4, 10)),  # sempre terá o tamanho 4 bits pois contará até no máximo 16
             data(Int(0, data.width, 10)),
             data_out(Int(0, data_out.width, 10)),
             r_out(Int(0, 1, 2)),
@@ -249,16 +251,16 @@ def make_component_in32(name, num_ports, data_width, data_width_ext):
                     )
                 ),
                 When(FSM_RD_DATA)(
-                    If(cont_conf < num_conf)(  
+                    If(cont_conf < num_conf)(  # a parte de configuração foi toda alterada
                         If(index_conf < (data_width_ext // (32)) - 1)(
                             If(flag_cpy_data == Int(0, 1, 2))(
                                 data(rd_data),
                                 flag_cpy_data(Int(1, 1, 2)),
-                                dconf(rd_data[0:32]),
+                                dconf(rd_data[0:32]),  # sempre é 32 bits
                                 cont_conf.inc(),
                                 index_conf.inc(),
                             ).Else(
-                                dconf(wconf[index_conf]),
+                                dconf(wconf[index_conf]),  # vai dar problema pois aqui sempre é 32.
                                 cont_conf.inc(),
                                 index_conf.inc(),
                             ),
@@ -276,8 +278,9 @@ def make_component_in32(name, num_ports, data_width, data_width_ext):
                             )
                         )
                     ).Elif(cont_data < (num_data / num_ports))(
+                        # Alteração no if para que fique de acordo com a qtde de portas
                         If(flag_cpy_data == Int(0, 1, 2))(
-                            data_out(rd_data[0:(data_width * num_ports)]), 
+                            data_out(rd_data[0:(data_width * num_ports)]),  # alteração no tamanho do barramento
                             r_out(Int(1, 1, 2)),
                             If(rdy)(
                                 reg_en(Int(1, 1, 2)),
@@ -331,6 +334,7 @@ def make_component_out(name, num_ports, data_width, data_width_ext):
     cont_data = m.Reg('cont_data', 32)
 
     fsm_cs = m.Reg('fms_cs', 3)
+    buffer = m.Reg('buffer', (data_width * num_ports))
 
     wr_en = m.Wire('wr_en')
     wr_data_in = m.Wire('wr_data_in', (num_ports * data_width))
@@ -365,6 +369,7 @@ def make_component_out(name, num_ports, data_width, data_width_ext):
             index_data(Int(0, bits, 10)),
             req_wr_data(Int(0, 1, 2)),
             done(Int(0, 1, 2)),
+            buffer(Int(0, (data_width * num_ports), 10)),
             cont_data(Int(0, cont_data.width, 10)),
             rdy(Int(1, rdy.width, 10))
         ).Elif(start)(
@@ -399,12 +404,20 @@ def make_component_out(name, num_ports, data_width, data_width_ext):
                     )
                 ),
                 When(FSM_WAIT)(
+                    # If(wr_en)(
+                    #    cont_data.inc(),
+                    #    buffer(wr_data_in)
+                    # ),
                     If(available_write)(
+                        #    If(index_data >= (data_width_ext // data_width) - 1)(
                         rdy(Int(1, rdy.width, 10)),
                         req_wr_data(Int(1, 1, 2)),
                         index_data(Int(0, bits, 10)),
                         fsm_cs(FSM_WR_DATA)
                     ).Else(
+                        #        data[index_data](buffer),
+                        #        index_data.inc(),
+                        #        rdy(Int(1, rdy.width, 10)),
                         rdy(Int(0, rdy.width, 10))
                     )
                 ),
@@ -502,12 +515,20 @@ def make_component_out32(name, num_ports, data_width, data_width_ext):
                     )
                 ),
                 When(FSM_WAIT)(
+                    # If(wr_en)(
+                    #    cont_data.inc(),
+                    #    buffer(wr_data_in)
+                    # ),
                     If(available_write)(
+                        #    If(index_data >= (data_width_ext // data_width) - 1)(
                         rdy(Int(1, rdy.width, 10)),
                         req_wr_data(Int(1, 1, 2)),
                         index_data(Int(0, bits, 10)),
                         fsm_cs(FSM_WR_DATA)
                     ).Else(
+                        #        data[index_data](buffer),
+                        #        index_data.inc(),
+                        #        rdy(Int(1, rdy.width, 10)),
                         rdy(Int(0, rdy.width, 10))
                     )
                 ),
