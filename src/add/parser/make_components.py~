@@ -718,7 +718,7 @@ def make_component_histogram(name):
                     ),
                     rout(Int(0,rout.width,10)),
                     counter_in.inc(),
-                ).Elif(AndList(counter_out < Int(histogram.length,9,10),counter_in >= immediate))(
+                ).Elif(counter_out < Int(histogram.length,9,10))(
                     dout(Mux(reseted[counter_out]==0,0,histogram[counter_out])),
                     rout(Int(1, rout.width, 10)),
                     counter_out.inc(),
