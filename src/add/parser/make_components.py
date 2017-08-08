@@ -677,6 +677,7 @@ def make_component_accumulator(name, operation, initvalue):
     )
     return m
 
+
 def make_component_histogram(name):
     m = Module(name)
     N = m.Parameter('N', 16)
@@ -694,32 +695,32 @@ def make_component_histogram(name):
     immediate = m.Reg('immediate', 24)
     counter_in = m.Reg('counter_in', 24)
     reseted = m.Reg('reseted', 256)
-    histogram = m.Reg('histogram',16,256)
+    histogram = m.Reg('histogram', 16, 256)
 
     m.Always(Posedge(clk), Posedge(rst))(
         If(rst)(
             rout(Int(0, rout.width, 10)),
             dout(0),
             immediate(ID),
-            counter_in(Int(0,counter_in.width,10)),
-            counter_out(Int(0,counter_out.width,10)),
-            reseted(Int(0,reseted.width,10)),
+            counter_in(Int(0, counter_in.width, 10)),
+            counter_out(Int(0, counter_out.width, 10)),
+            reseted(Int(0, reseted.width, 10)),
         ).Elif(clk)(
             If(dconf[:8] == ID)(
                 immediate(dconf[8:32])
             ),
             If(en)(
-                If(AndList(rin == Int(1, 1, 10),counter_in < immediate))(
+                If(AndList(rin == Int(1, 1, 10), counter_in < immediate))(
                     If(reseted[din] == 0)(
                         histogram[din](Int(1, 1, 10)),
                         reseted[din](Int(1, 1, 10)),
                     ).Else(
                         histogram[din](histogram[din] + 1),
                     ),
-                    rout(Int(0,rout.width,10)),
+                    rout(Int(0, rout.width, 10)),
                     counter_in.inc(),
-                ).Elif(AndList(counter_out < Int(histogram.length,9,10),counter_in >= immediate))(
-                    dout(Mux(reseted[counter_out]==0,0,histogram[counter_out])),
+                ).Elif(AndList(counter_out < Int(histogram.length, 9, 10), counter_in >= immediate))(
+                    dout(Mux(reseted[counter_out] == 0, 0, histogram[counter_out])),
                     rout(Int(1, rout.width, 10)),
                     counter_out.inc(),
                 ).Else(
@@ -730,8 +731,78 @@ def make_component_histogram(name):
     )
     return m
 
+
+def make_branch_binary(name, operation):
+    m = Module(name)
+    N = m.Parameter('N', 16)
+    clk = m.Input('clk')
+    rst = m.Input('rst')
+    en = m.Input('en')
+    din1 = m.Input('din1', N)
+    din2 = m.Input('din2', N)
+    rin1 = m.Input('rin1')
+    rin2 = m.Input('rin2')
+    rif = m.OutputReg('if', 1)
+    relse = m.OutputReg('else', 1)
+    m.Always(Posedge(clk), Posedge(rst))(
+        If(rst)(
+            rif(0),
+            relse(0),
+        ).Elif(clk & en)(
+            If((rin1 == Int(1, 1, 10)) & (rin2 == Int(1, 1, 10)))(
+                rif(operation(din1, din2)),
+                relse(~operation(din1, din2)),
+            ).Else(
+                rif(0),
+                relse(0),
+            )
+        )
+    )
+    return m
+
+
+def make_branch_immediate(name, operation):
+    m = Module(name)
+    N = m.Parameter('N', 16)
+    clk = m.Input('clk')
+    rst = m.Input('rst')
+    en = m.Input('en')
+    ID = m.Parameter('ID', 0)
+    dconf = m.Input('dconf', 32)
+    rin = m.Input('rin')
+    din = m.Input('din', N)
+    rif = m.OutputReg('if', 1)
+    relse = m.OutputReg('else', N)
+    immediate = m.Reg('immediate', 24)
+    m.Always(Posedge(clk), Posedge(rst))(
+        If(rst)(
+            rif(0),
+            relse(0),
+            immediate(ID)
+        ).Elif(clk)(
+            If(dconf[:8] == ID)(
+                immediate(Cat(Int(0, 8, 10), dconf[8:N + 8]))
+            ),
+            If(en)(
+                If(rin == Int(1, 1, 10))(
+                    rif(operation(din, immediate)),
+                    relse(~operation(din, immediate))
+                ).Else(
+                    rif(0),
+                    relse(0)
+                )
+            )
+        )
+    )
+    return m
+
+
 def add(a, b):
     return a + b
+
+
+def andf(a, b):
+    return a & b
 
 
 def sub(a, b):
@@ -754,12 +825,51 @@ def max(a, b):
     return Mux(a > b, a, b)
 
 
+def mod(a, b):
+    return a % b
+
+
+def orf(a, b):
+    return a | b
+
+
+def notf(a):
+    return ~a
+
+
 def div(a, b):
     return Mux(b == 0, 0, a / b)  # Uma forma de tratar a divisão por 0! :)
 
 
+def slt(a, b):
+    return Mux(a < b, 1, 0)
+
+
+def shl(a, b):
+    return a << b
+
+
+def shr(a, b):
+    return a >> b
+
+
+def abs(a):
+    return Mux((a & 0x8000) == 0x8000, ((~a) +  1), a)
+
+
+def beq(a, b):
+    return Mux(a == b, 1, 0)
+
+
+def bne(a, b):
+    return Mux(a == b, 0, 1)
+
+
 def functions(functionname):
-    funcs = {'add_add': add, 'add_addi': add, 'add_sub': sub, 'add_subi': sub, 'add_mul': mul, 'add_muli': mul,
-             'add_div': div, 'add_divi': div,
-             'add_register': reg, 'add_accmin': min, 'add_accmax': max, 'add_accadd': add}
+    funcs = {'add_abs': abs, 'add_accmin': min, 'add_accmax': max, 'add_accadd': add, 'add_accmul': mul,
+             'add_add': add, 'add_addi': add, 'add_and': andf, 'add_andi': andf, 'add_beq': beq, 'add_beqi': beq,
+             'add_bne': bne, 'add_bnei': bne, 'add_div': div, 'add_divi': div, 'add_max': max, 'add_min': min,
+             'add_mod': mod, 'add_modi': mod, 'add_mul': mul, 'add_muli': mul, 'add_not': notf, 'add_or': orf,
+             'add_ori': orf, 'add_register': reg, 'add_shl': shl, 'add_shli': shl, 'add_shr': shr,
+             'add_shri': shr, 'add_slt': slt, 'add_slti': slt, 'add_sub': sub, 'add_subi': sub}
     return funcs[functionname]

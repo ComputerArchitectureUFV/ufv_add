@@ -69,13 +69,22 @@ def make_dataflow(hds_string, data_width_ext):
                     mkc = make_component_accumulator(comp['operator'], functions(comp['operator']), initvalue)
                 elif 'histogram' in comp['operator']:
                     mkc = make_component_histogram(comp['operator'])
+                elif 'beqi' in comp['operator']:
+                    mkc = make_branch_immediate(comp['operator'],functions(comp['operator']))
+                elif 'bnei' in comp['operator']:
+                    mkc = make_branch_immediate(comp['operator'],functions(comp['operator']))
                 else:
                     mkc = make_component_immediate(comp['operator'], functions(comp['operator']))
             params = [('N', int(n)), ('ID', int(comp['const']))]
             m.Instance(mkc, c, params, p)
         elif comp['type'] == 'b':
             if not exist:
-                mkc = make_component_binary(comp['operator'], functions(comp['operator']))
+                if 'beq' in comp['operator']:
+                    mkc = make_branch_binary(comp['operator'],functions(comp['operator']))
+                elif 'bne' in comp['operator']:
+                    mkc = make_branch_binary(comp['operator'],functions(comp['operator']))
+                else:
+                    mkc = make_component_binary(comp['operator'], functions(comp['operator']))
             params = [('N', int(n))]
             m.Instance(mkc, c, params, p)
         elif comp['type'] == 'u':
