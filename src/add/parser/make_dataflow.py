@@ -101,7 +101,7 @@ def make_dataflow(hds_string, data_width_ext):
                              ('num_data', ports['num_data_out']), ('available_write', ports['available_write']),
                              ('req_wr_data', ports['req_wr_data']), ('wr_data', ports['wr_data']),
                              ('done', ports['done'])]
-                    if num_in == 32:
+                    if num_out == 32:
                         mkc = make_component_out32(comp['operator'], num_out, data_width, data_width_ext)
                     else:
                         mkc = make_component_out(comp['operator'], num_out, data_width, data_width_ext)

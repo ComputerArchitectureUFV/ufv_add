@@ -86,7 +86,7 @@ def make_component_in(name, num_ports, data_width, data_width_ext):
                         req_rd_data(Int(1, 1, 2)),
                         flag_cpy_data(Int(0, 1, 2)),
                         fsm_cs(FSM_RD_DATA)
-                    ).Elif(cont_data >= (num_data / num_ports))(
+                    ).Elif(cont_data >= (num_data))(
                         fsm_cs(FSM_DONE),
                         reg_en(Int(1, 1, 2))
                     ).Else(
@@ -120,7 +120,7 @@ def make_component_in(name, num_ports, data_width, data_width_ext):
                                 fsm_cs(FSM_WAIT)
                             )
                         )
-                    ).Elif(cont_data < (num_data / num_ports))(
+                    ).Elif(cont_data < (num_data))(
                         # Alteração no if para que fique de acordo com a qtde de portas
                         If(index_data < (data_width_ext // (data_width * num_ports)) - 1)(
                             If(flag_cpy_data == Int(0, 1, 2))(
@@ -133,7 +133,7 @@ def make_component_in(name, num_ports, data_width, data_width_ext):
                             r_out(Int(1, 1, 2)),
                             If(rdy)(
                                 reg_en(Int(1, 1, 2)),
-                                cont_data.inc(),
+                                cont_data(cont_data + num_ports),
                                 index_data.inc()
                             ),
                             fsm_cs(FSM_RD_DATA)
@@ -143,7 +143,7 @@ def make_component_in(name, num_ports, data_width, data_width_ext):
                             If(rdy)(
                                 reg_en(Int(1, 1, 2)),
                                 index_data(Int(0, index_data.width, 10)),
-                                cont_data.inc(),
+                                cont_data(cont_data + num_ports),
                                 If(available_read)(
                                     req_rd_data(Int(1, 1, 2)),
                                     flag_cpy_data(Int(0, 1, 2)),
@@ -243,7 +243,7 @@ def make_component_in32(name, num_ports, data_width, data_width_ext):
                         req_rd_data(Int(1, 1, 2)),
                         flag_cpy_data(Int(0, 1, 2)),
                         fsm_cs(FSM_RD_DATA)
-                    ).Elif(cont_data >= (num_data / num_ports))(
+                    ).Elif(cont_data >= (num_data))(
                         fsm_cs(FSM_DONE),
                         reg_en(Int(1, 1, 2))
                     ).Else(
@@ -277,14 +277,14 @@ def make_component_in32(name, num_ports, data_width, data_width_ext):
                                 fsm_cs(FSM_WAIT)
                             )
                         )
-                    ).Elif(cont_data < (num_data / num_ports))(
+                    ).Elif(cont_data < (num_data))(
                         # Alteração no if para que fique de acordo com a qtde de portas
                         If(flag_cpy_data == Int(0, 1, 2))(
                             data_out(rd_data[0:(data_width * num_ports)]),  # alteração no tamanho do barramento
                             r_out(Int(1, 1, 2)),
                             If(rdy)(
                                 reg_en(Int(1, 1, 2)),
-                                cont_data.inc(),
+                                cont_data(cont_data + num_ports),
                                 flag_cpy_data(Int(1, 1, 2))
                             ),
                         ).Else(
@@ -376,15 +376,15 @@ def make_component_out(name, num_ports, data_width, data_width_ext):
             req_wr_data(Int(0, 1, 2)),
             Case(fsm_cs)(
                 When(FSM_WR_DATA)(
-                    If(cont_data >= (num_data / num_ports))(
+                    If(cont_data >= num_data)(
                         If(index_data > 0)(
                             If(available_write)(
                                 req_wr_data(Int(1, 1, 2)),
                                 index_data(Int(0, bits, 10)),
-                                fsm_cs(FSM_DONE)
+                                fsm_cs(FSM_DONE),
                             )
                         ).Else(
-                            fsm_cs(FSM_DONE)
+                            fsm_cs(FSM_DONE),
                         )
                     ).Elif(wr_en)(
                         If(index_data < (data_width_ext // (data_width * num_ports)) - 1)(
@@ -400,7 +400,7 @@ def make_component_out(name, num_ports, data_width, data_width_ext):
                             rdy(Int(0, rdy.width, 10))
 
                         ),
-                        cont_data.inc()
+                        cont_data(cont_data + num_ports)
                     )
                 ),
                 When(FSM_WAIT)(
@@ -499,7 +499,7 @@ def make_component_out32(name, num_ports, data_width, data_width_ext):
             req_wr_data(Int(0, 1, 2)),
             Case(fsm_cs)(
                 When(FSM_WR_DATA)(
-                    If(cont_data >= (num_data / num_ports))(
+                    If(cont_data >= (num_data))(
                         fsm_cs(FSM_DONE)
                     ).Elif(wr_en)(
                         If(available_write)(
@@ -511,7 +511,7 @@ def make_component_out32(name, num_ports, data_width, data_width_ext):
                             fsm_cs(FSM_WAIT),
                             rdy(Int(0, rdy.width, 10))
                         ),
-                        cont_data.inc()
+                        cont_data(cont_data + num_ports)
                     )
                 ),
                 When(FSM_WAIT)(
@@ -753,16 +753,13 @@ def min(a, b):
 def max(a, b):
     return Mux(a > b, a, b)
 
-def slt(a, b):
-    return a << b
-
 
 def div(a, b):
-    return Mux(b == 0, 0, a / b)  
+    return Mux(b == 0, 0, a / b)  # Uma forma de tratar a divisão por 0! :)
 
 
 def functions(functionname):
     funcs = {'add_add': add, 'add_addi': add, 'add_sub': sub, 'add_subi': sub, 'add_mul': mul, 'add_muli': mul,
              'add_div': div, 'add_divi': div,
-             'add_register': reg, 'add_accmin': min, 'add_accmax': max, 'add_accadd': add,"add_slt":slt}
+             'add_register': reg, 'add_accmin': min, 'add_accmax': max, 'add_accadd': add}
     return funcs[functionname]
