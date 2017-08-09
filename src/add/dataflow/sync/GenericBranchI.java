@@ -60,8 +60,8 @@ public class GenericBranchI extends hades.models.rtlib.GenericRtlibObject {
         portRst = new PortStdLogic1164(this, "rst", Port.IN, null);
         portEn = new PortStdLogic1164(this, "en", Port.IN, null);
         portRin = new PortStdLogic1164(this, "rin", Port.IN, null);
-        portIf = new PortStdLogic1164(this, "if", Port.OUT, null);
-        portElse = new PortStdLogic1164(this, "else", Port.OUT, null);
+        portIf = new PortStdLogic1164(this, "ifout", Port.OUT, null);
+        portElse = new PortStdLogic1164(this, "elseout", Port.OUT, null);
         portDin = new PortStdLogicVector(this, "din", Port.IN, null, new Integer(n_bits));
         portDconf = new PortStdLogicVector(this, "dconf", Port.IN, null, new Integer(32));
 

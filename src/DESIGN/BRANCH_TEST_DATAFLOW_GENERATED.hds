@@ -28,8 +28,8 @@ hades.signals.SignalStdLogic1164 w5 2 muli1 rout reg1 rin 0 0
 hades.signals.SignalStdLogicVector w6 16 2 muli1 dout reg1 din 0 0
 hades.signals.SignalStdLogic1164 w7 2 muli2 rout reg2 rin 0 0
 hades.signals.SignalStdLogicVector w8 16 2 muli2 dout reg2 din 0 0
-hades.signals.SignalStdLogic1164 w9 2 beqi1 if merge1 rin1 0 0
-hades.signals.SignalStdLogic1164 w10 2 beqi1 else merge1 rin2 0 0
+hades.signals.SignalStdLogic1164 w9 2 beqi1 ifout merge1 rin1 0 0
+hades.signals.SignalStdLogic1164 w10 2 beqi1 elseout merge1 rin2 0 0
 hades.signals.SignalStdLogicVector w11 16 2 reg1 dout merge1 din1 0 0
 hades.signals.SignalStdLogicVector w12 16 2 reg2 dout merge1 din2 0 0
 hades.signals.SignalStdLogic1164 w13 2 merge1 rout out rin1 0 0

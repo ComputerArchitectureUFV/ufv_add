@@ -15,7 +15,7 @@ hades.models.io.Ipin reset 4800 11400 @N 1001 null 1
 add.dataflow.sync.In1 in 5400 7200 @N 1001 16 1.0E-8 1 n
 [end components]
 [signals]
-hades.signals.SignalStdLogic1164 n9 2 i0 if i2 rin1 3 2 15000 7800 16200 7800 2 16200 7800 16200 11400 2 16200 11400 16800 11400 0 
+hades.signals.SignalStdLogic1164 n9 2 i0 ifout i2 rin1 3 2 15000 7800 16200 7800 2 16200 7800 16200 11400 2 16200 11400 16800 11400 0 
 hades.signals.SignalStdLogicVector n8 16 2 c2 dout i5 din 1 2 13200 15000 11400 15000 0 
 hades.signals.SignalStdLogic1164 n7 2 c2 rout i5 rin 1 2 11400 14400 13200 14400 0 
 hades.signals.SignalStdLogicVector n6 16 2 c3 dout i6 din 1 2 11400 12000 13200 12000 0 
@@ -30,7 +30,7 @@ hades.signals.SignalStdLogic1164 n0 2 i1 rout i0 rin 1 2 11400 7800 13200 7800 0
 hades.signals.SignalStdLogicVector n14 16 2 i2 dout out din1 1 2 19200 12000 18600 12000 0 
 hades.signals.SignalStdLogic1164 n13 2 i2 rout out rin1 1 2 18600 11400 19200 11400 0 
 hades.signals.SignalStdLogicVector n12 16 2 i5 dout i2 din2 3 2 15000 15000 16200 15000 2 16200 15000 16200 13200 2 16200 13200 16800 13200 0 
-hades.signals.SignalStdLogic1164 n11 2 i0 else i2 rin2 3 2 16800 12600 15600 12600 2 15600 12600 15600 8400 2 15600 8400 15000 8400 0 
+hades.signals.SignalStdLogic1164 n11 2 i0 elseout i2 rin2 3 2 16800 12600 15600 12600 2 15600 12600 15600 8400 2 15600 8400 15000 8400 0 
 hades.signals.SignalStdLogicVector n10 16 2 i6 dout i2 din1 1 2 16800 12000 15000 12000 0 
 hades.signals.SignalStdLogic1164 enwire 9 in en out en c2 en i5 en i6 en c3 en i1 en i0 en i2 en 0 0 
 hades.signals.SignalStdLogic1164 clkwire 10 clock clk i0 clk i6 clk i1 clk c3 clk in clk c2 clk i5 clk i2 clk out clk 0 0 
