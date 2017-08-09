@@ -742,8 +742,8 @@ def make_branch_binary(name, operation):
     din2 = m.Input('din2', N)
     rin1 = m.Input('rin1')
     rin2 = m.Input('rin2')
-    rif = m.OutputReg('if', 1)
-    relse = m.OutputReg('else', 1)
+    rif = m.OutputReg('ifout', 1)
+    relse = m.OutputReg('elseout', 1)
     m.Always(Posedge(clk), Posedge(rst))(
         If(rst)(
             rif(0),
@@ -771,8 +771,8 @@ def make_branch_immediate(name, operation):
     dconf = m.Input('dconf', 32)
     rin = m.Input('rin')
     din = m.Input('din', N)
-    rif = m.OutputReg('if', 1)
-    relse = m.OutputReg('else', N)
+    rif = m.OutputReg('ifout', 1)
+    relse = m.OutputReg('elseout', N)
     immediate = m.Reg('immediate', 24)
     m.Always(Posedge(clk), Posedge(rst))(
         If(rst)(
