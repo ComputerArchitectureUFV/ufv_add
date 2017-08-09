@@ -796,6 +796,36 @@ def make_branch_immediate(name, operation):
     )
     return m
 
+def make_component_merge(name):
+    m = Module(name)
+    N = m.Parameter('N', 16)
+    clk = m.Input('clk')
+    rst = m.Input('rst')
+    en = m.Input('en')
+    din1 = m.Input('din1', N)
+    din2 = m.Input('din2', N)
+    rin1 = m.Input('rin1')
+    rin2 = m.Input('rin2')
+    rout = m.OutputReg('rout', 1)
+    dout = m.OutputReg('dout', N)
+    m.Always(Posedge(clk), Posedge(rst))(
+        If(rst)(
+            rout(Int(0, rout.width, 10)),
+            dout(0),
+        ).Elif(clk & en)(
+            If((rin1 == Int(1, 1, 10)))(
+                dout(din1),
+                rout(Int(1, rout.width, 10))
+            ).Elif((rin2 == Int(1, 1, 10)))(
+                dout(din2),
+                rout(Int(1, rout.width, 10))
+            ).Else(
+                rout(Int(0, rout.width, 10))
+            )
+        )
+    )
+    return m
+
 
 def add(a, b):
     return a + b

@@ -82,7 +82,9 @@ def make_dataflow(hds_string, data_width_ext):
                 if 'beq' in comp['operator']:
                     mkc = make_branch_binary(comp['operator'],functions(comp['operator']))
                 elif 'bne' in comp['operator']:
-                    mkc = make_branch_binary(comp['operator'],functions(comp['operator']))
+                    mkc = make_branch_binary(comp['operator'], functions(comp['operator']))
+                elif 'merge' in comp['operator']:
+                    mkc = make_component_merge(comp['operator'])
                 else:
                     mkc = make_component_binary(comp['operator'], functions(comp['operator']))
             params = [('N', int(n))]
