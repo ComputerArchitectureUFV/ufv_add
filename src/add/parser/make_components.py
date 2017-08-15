@@ -288,7 +288,7 @@ def make_component_in32(name, num_ports, data_width, data_width_ext):
                                 flag_cpy_data(Int(1, 1, 2))
                             ),
                         ).Else(
-                            reg_en(Int(1, 1, 2)),
+                            #reg_en(Int(1, 1, 2)),
                             fsm_cs(FSM_WAIT)
                         ),
                     ).Else(
@@ -772,8 +772,8 @@ def make_branch_immediate(name, operation):
     rin = m.Input('rin')
     din = m.Input('din', N)
     rif = m.OutputReg('ifout', 1)
-    relse = m.OutputReg('elseout', N)
-    immediate = m.Reg('immediate', 24)
+    relse = m.OutputReg('elseout', 1)
+    immediate = m.Reg('immediate', 1)
     m.Always(Posedge(clk), Posedge(rst))(
         If(rst)(
             rif(0),
