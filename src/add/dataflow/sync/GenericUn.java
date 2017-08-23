@@ -28,12 +28,19 @@ import hades.utils.StringTokenizer;
  */
 public class GenericUn extends hades.models.rtlib.GenericRtlibObject {
 
-    protected Label stringLabel, labelNome;
-    protected String s, componentType;
-    protected Rectangle background;
+    private Label stringLabel;
 
-    protected PortStdLogic1164 portClk, portRst, portRin, portRout, portEn;
-    protected PortStdLogicVector portDin, portDout;
+    private Label labelNome;
+    private String s;
+    private String componentType;
+    private Rectangle background;
+    private PortStdLogic1164 portClk;
+    private PortStdLogic1164 portRst;
+    private PortStdLogic1164 portRin;
+    private PortStdLogic1164 portRout;
+    private PortStdLogic1164 portEn;
+    private PortStdLogicVector portDin;
+    private PortStdLogicVector portDout;
 
     /**
      * Object Constructor.
@@ -49,22 +56,22 @@ public class GenericUn extends hades.models.rtlib.GenericRtlibObject {
      */
     @Override
     public void constructPorts() {
-        portClk = new PortStdLogic1164(this, "clk", Port.IN, null);
-        portRin = new PortStdLogic1164(this, "rin", Port.IN, null);
-        portRout = new PortStdLogic1164(this, "rout", Port.OUT, null);
-        portEn = new PortStdLogic1164(this, "en", Port.IN, null);
-        portRst = new PortStdLogic1164(this, "rst", Port.IN, null);
-        portDin = new PortStdLogicVector(this, "din", Port.IN, null, new Integer(n_bits));
-        portDout = new PortStdLogicVector(this, "dout", Port.OUT, null, new Integer(n_bits));
+        setPortClk(new PortStdLogic1164(this, "clk", Port.IN, null));
+        setPortRin(new PortStdLogic1164(this, "rin", Port.IN, null));
+        setPortRout(new PortStdLogic1164(this, "rout", Port.OUT, null));
+        setPortEn(new PortStdLogic1164(this, "en", Port.IN, null));
+        setPortRst(new PortStdLogic1164(this, "rst", Port.IN, null));
+        setPortDin(new PortStdLogicVector(this, "din", Port.IN, null, new Integer(n_bits)));
+        setPortDout(new PortStdLogicVector(this, "dout", Port.OUT, null, new Integer(n_bits)));
 
         ports = new Port[7];
-        ports[0] = portClk;
-        ports[1] = portDin;
-        ports[2] = portDout;
-        ports[3] = portRst;
-        ports[4] = portRin;
-        ports[5] = portRout;
-        ports[6] = portEn;
+        ports[0] = getPortClk();
+        ports[1] = getPortDin();
+        ports[2] = getPortDout();
+        ports[3] = getPortRst();
+        ports[4] = getPortRin();
+        ports[5] = getPortRout();
+        ports[6] = getPortEn();
     }
 
     /**
@@ -73,9 +80,9 @@ public class GenericUn extends hades.models.rtlib.GenericRtlibObject {
      * @param s - Text to be updated.
      */
     public void setString(String s) {
-        this.s = s;
-        stringLabel.setText(s);
-        labelNome.setText(getName());
+        this.setS(s);
+        getStringLabel().setText(s);
+        getLabelNome().setText(getName());
         getSymbol().painter.paint(getSymbol(), 100);
     }
 
@@ -113,8 +120,8 @@ public class GenericUn extends hades.models.rtlib.GenericRtlibObject {
      * level.In this case it clears the text displayed by the component.
      */
     public void reseted() {
-        s = "NULL";
-        setString(s);
+        setS("NULL");
+        setString(getS());
     }
 
     /**
@@ -139,9 +146,9 @@ public class GenericUn extends hades.models.rtlib.GenericRtlibObject {
      */
     public void setCompName(String l) {
         if (l.equals("")) {
-            this.componentType = ".";
+            this.setComponentType(".");
         } else {
-            this.componentType = l;
+            this.setComponentType(l);
         }
     }
 
@@ -166,8 +173,8 @@ public class GenericUn extends hades.models.rtlib.GenericRtlibObject {
         Signal signalRin = null, signalRout = null;
 
         //código para tick_up e Tick_down
-        if ((signalClk = portClk.getSignal()) != null) {
-            SignalStdLogic1164 tick = (SignalStdLogic1164) portClk.getSignal();
+        if ((signalClk = getPortClk().getSignal()) != null) {
+            SignalStdLogic1164 tick = (SignalStdLogic1164) getPortClk().getSignal();
             if (tick.hasRisingEdge()) {
                 tickUp();
             } else if (tick.hasFallingEdge()) {
@@ -178,64 +185,64 @@ public class GenericUn extends hades.models.rtlib.GenericRtlibObject {
 
         boolean isX = false;
 
-        if ((signalClk = portClk.getSignal()) == null) {
+        if ((signalClk = getPortClk().getSignal()) == null) {
             isX = true;
-        } else if ((signalRst = portRst.getSignal()) == null) {
+        } else if ((signalRst = getPortRst().getSignal()) == null) {
             isX = true;
-        } else if ((signalEn = portEn.getSignal()) == null) {
+        } else if ((signalEn = getPortEn().getSignal()) == null) {
             isX = true;
-        } else if ((signalDin = portDin.getSignal()) == null) {
+        } else if ((signalDin = getPortDin().getSignal()) == null) {
             isX = true;
-        } else if ((signalDout = portDout.getSignal()) == null) {
+        } else if ((signalDout = getPortDout().getSignal()) == null) {
             isX = true;
-        } else if ((signalRin = portRin.getSignal()) == null) {
+        } else if ((signalRin = getPortRin().getSignal()) == null) {
             isX = true;
         }
 
-        StdLogic1164 valueRst = portRst.getValueOrU();
+        StdLogic1164 valueRst = getPortRst().getValueOrU();
         StdLogic1164 rOut;
 
         if (isX || valueRst.is_1()) {
             reseted();
 
             //para portDout
-            if ((signalDout = portDout.getSignal()) != null) { // get output
+            if ((signalDout = getPortDout().getSignal()) != null) { // get output
                 vector = vector_UUU.copy();
                 time = simulator.getSimTime() + delay;
-                simulator.scheduleEvent(new SimEvent(signalDout, time, vector, portDout));
+                simulator.scheduleEvent(new SimEvent(signalDout, time, vector, getPortDout()));
             }
             //para portRout
-            if ((signalRout = portRout.getSignal()) != null) { // get output
+            if ((signalRout = getPortRout().getSignal()) != null) { // get output
                 rOut = new StdLogic1164(2);
                 time = simulator.getSimTime() + delay;
-                simulator.scheduleEvent(SimEvent1164.createNewSimEvent(signalRout, time, rOut, portRout));
+                simulator.scheduleEvent(SimEvent1164.createNewSimEvent(signalRout, time, rOut, getPortRout()));
             }
         } else {
-            SignalStdLogic1164 clk = (SignalStdLogic1164) portClk.getSignal();
-            StdLogic1164 en = portEn.getValueOrU();
-            StdLogic1164 rIn = portRin.getValueOrU();
+            SignalStdLogic1164 clk = (SignalStdLogic1164) getPortClk().getSignal();
+            StdLogic1164 en = getPortEn().getValueOrU();
+            StdLogic1164 rIn = getPortRin().getValueOrU();
 
             if (clk.hasRisingEdge()) {
                 if (en.is_1()) {
-                    signalDin = portDin.getSignal();
+                    signalDin = getPortDin().getSignal();
                     StdLogicVector d_in = (StdLogicVector) signalDin.getValue();
                     if (rIn.is_1()) {
                         StdLogicVector saida = new StdLogicVector(32);
                         saida.setValue(compute((int) d_in.getValue()));			//aqui ocorre a chamada para a computação da saída.
                         vector = saida.copy();
                         time = simulator.getSimTime() + delay;
-                        simulator.scheduleEvent(new SimEvent(signalDout, time, vector, portDout));
-                        if ((signalRout = portRout.getSignal()) != null) { // get output
+                        simulator.scheduleEvent(new SimEvent(signalDout, time, vector, getPortDout()));
+                        if ((signalRout = getPortRout().getSignal()) != null) { // get output
                             rOut = new StdLogic1164(3);
                             time = simulator.getSimTime() + delay;
-                            simulator.scheduleEvent(SimEvent1164.createNewSimEvent(signalRout, time, rOut, portRout));
+                            simulator.scheduleEvent(SimEvent1164.createNewSimEvent(signalRout, time, rOut, getPortRout()));
                         }
 
                     } else {
-                        if ((signalRout = portRout.getSignal()) != null) { // get output
+                        if ((signalRout = getPortRout().getSignal()) != null) { // get output
                             rOut = new StdLogic1164(2);
                             time = simulator.getSimTime() + delay;
-                            simulator.scheduleEvent(SimEvent1164.createNewSimEvent(signalRout, time, rOut, portRout));
+                            simulator.scheduleEvent(SimEvent1164.createNewSimEvent(signalRout, time, rOut, getPortRout()));
                         }
                         notCompute();
                     }
@@ -277,44 +284,44 @@ public class GenericUn extends hades.models.rtlib.GenericRtlibObject {
         BusPortSymbol busportsymbol;
 
         portsymbol = new PortSymbol();
-        portsymbol.initialize("1200 1800 " + portClk.getName());
+        portsymbol.initialize("1200 1800 " + getPortClk().getName());
         symbol.addMember(portsymbol);
 
         portsymbol = new PortSymbol();
-        portsymbol.initialize("600 1800 " + portRst.getName());
+        portsymbol.initialize("600 1800 " + getPortRst().getName());
         symbol.addMember(portsymbol);
 
         portsymbol = new PortSymbol();
-        portsymbol.initialize("0 600 " + portRin.getName());
+        portsymbol.initialize("0 600 " + getPortRin().getName());
         symbol.addMember(portsymbol);
 
         portsymbol = new PortSymbol();
-        portsymbol.initialize("1800 600 " + portRout.getName());
+        portsymbol.initialize("1800 600 " + getPortRout().getName());
         symbol.addMember(portsymbol);
 
         portsymbol = new PortSymbol();
-        portsymbol.initialize("600 0 " + portEn.getName());
+        portsymbol.initialize("600 0 " + getPortEn().getName());
         symbol.addMember(portsymbol);
 
         busportsymbol = new BusPortSymbol();
-        busportsymbol.initialize("0 1200 " + portDin.getName());
+        busportsymbol.initialize("0 1200 " + getPortDin().getName());
         symbol.addMember(busportsymbol);
 
         busportsymbol = new BusPortSymbol();
-        busportsymbol.initialize("1800 1200 " + portDout.getName());
+        busportsymbol.initialize("1800 1200 " + getPortDout().getName());
         symbol.addMember(busportsymbol);
 
-        labelNome = new Label();
-        labelNome.initialize("0 -600 " + getName());
-        symbol.addMember(labelNome);
+        setLabelNome(new Label());
+        getLabelNome().initialize("0 -600 " + getName());
+        symbol.addMember(getLabelNome());
 
         Label label0 = new Label();
-        label0.initialize("900 600 2 " + componentType);
+        label0.initialize("900 600 2 " + getComponentType());
         symbol.addMember(label0);
 
-        stringLabel = new Label();
-        stringLabel.initialize("0 -200 " + s);
-        symbol.addMember(stringLabel);
+        setStringLabel(new Label());
+        getStringLabel().initialize("0 -200 " + getS());
+        symbol.addMember(getStringLabel());
     }
 
     /**
@@ -373,5 +380,173 @@ public class GenericUn extends hades.models.rtlib.GenericRtlibObject {
             e.printStackTrace();
         }
         return true;
+    }
+
+    /**
+     * @return the stringLabel
+     */
+    public Label getStringLabel() {
+        return stringLabel;
+    }
+
+    /**
+     * @param stringLabel the stringLabel to set
+     */
+    public void setStringLabel(Label stringLabel) {
+        this.stringLabel = stringLabel;
+    }
+
+    /**
+     * @return the labelNome
+     */
+    public Label getLabelNome() {
+        return labelNome;
+    }
+
+    /**
+     * @param labelNome the labelNome to set
+     */
+    public void setLabelNome(Label labelNome) {
+        this.labelNome = labelNome;
+    }
+
+    /**
+     * @return the s
+     */
+    public String getS() {
+        return s;
+    }
+
+    /**
+     * @param s the s to set
+     */
+    public void setS(String s) {
+        this.s = s;
+    }
+
+    /**
+     * @return the componentType
+     */
+    public String getComponentType() {
+        return componentType;
+    }
+
+    /**
+     * @param componentType the componentType to set
+     */
+    public void setComponentType(String componentType) {
+        this.componentType = componentType;
+    }
+
+    /**
+     * @return the background
+     */
+    public Rectangle getBackground() {
+        return background;
+    }
+
+    /**
+     * @param background the background to set
+     */
+    public void setBackground(Rectangle background) {
+        this.background = background;
+    }
+
+    /**
+     * @return the portClk
+     */
+    public PortStdLogic1164 getPortClk() {
+        return portClk;
+    }
+
+    /**
+     * @param portClk the portClk to set
+     */
+    public void setPortClk(PortStdLogic1164 portClk) {
+        this.portClk = portClk;
+    }
+
+    /**
+     * @return the portRst
+     */
+    public PortStdLogic1164 getPortRst() {
+        return portRst;
+    }
+
+    /**
+     * @param portRst the portRst to set
+     */
+    public void setPortRst(PortStdLogic1164 portRst) {
+        this.portRst = portRst;
+    }
+
+    /**
+     * @return the portRin
+     */
+    public PortStdLogic1164 getPortRin() {
+        return portRin;
+    }
+
+    /**
+     * @param portRin the portRin to set
+     */
+    public void setPortRin(PortStdLogic1164 portRin) {
+        this.portRin = portRin;
+    }
+
+    /**
+     * @return the portRout
+     */
+    public PortStdLogic1164 getPortRout() {
+        return portRout;
+    }
+
+    /**
+     * @param portRout the portRout to set
+     */
+    public void setPortRout(PortStdLogic1164 portRout) {
+        this.portRout = portRout;
+    }
+
+    /**
+     * @return the portEn
+     */
+    public PortStdLogic1164 getPortEn() {
+        return portEn;
+    }
+
+    /**
+     * @param portEn the portEn to set
+     */
+    public void setPortEn(PortStdLogic1164 portEn) {
+        this.portEn = portEn;
+    }
+
+    /**
+     * @return the portDin
+     */
+    public PortStdLogicVector getPortDin() {
+        return portDin;
+    }
+
+    /**
+     * @param portDin the portDin to set
+     */
+    public void setPortDin(PortStdLogicVector portDin) {
+        this.portDin = portDin;
+    }
+
+    /**
+     * @return the portDout
+     */
+    public PortStdLogicVector getPortDout() {
+        return portDout;
+    }
+
+    /**
+     * @param portDout the portDout to set
+     */
+    public void setPortDout(PortStdLogicVector portDout) {
+        this.portDout = portDout;
     }
 }

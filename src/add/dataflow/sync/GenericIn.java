@@ -40,34 +40,40 @@ public class GenericIn extends SimObject
         java.io.Serializable {
 
     //rtlibgeneric
-    protected int n_bits = 16;
-    protected StdLogicVector vector,
-            vector_UUU, vector_XXX, vector_ZZZ,
-            vector_000, vector_111;
-    protected PortStdLogicVector vectorOutputPort;
+    private int n_bits = 16;
+    private StdLogicVector vector;
 
-    protected double delay;
-    protected double defaultdelay = 10E-9;
+    private StdLogicVector vector_UUU;
+    private StdLogicVector vector_XXX;
 
     // Graphics stuff
-    protected boolean enableAnimationFlag;
-    protected ColoredValueLabel valueLabel;
-    protected FlexibleLabelFormatter labelFormatter; // initially null
+    private StdLogicVector vector_ZZZ;
+    private StdLogicVector vector_000;
+    private StdLogicVector vector_111; // initially null
     //rtlibgeneric
+    private PortStdLogicVector vectorOutputPort;
+    private double delay;
+    private double defaultdelay = 10E-9;
+    private boolean enableAnimationFlag;
+    private ColoredValueLabel valueLabel;
+    private FlexibleLabelFormatter labelFormatter;
 
     private String componentType = "_";
 
-    final int QTDE_PORTS;
-    final int TOT_PORTS;
+    private final int QTDE_PORTS;
+    private final int TOT_PORTS;
 
-    protected PortStdLogic1164 portClk, portRst, portEnOut, portRdy;
-    protected PortStdLogicVector[] portDout;
-    protected PortStdLogic1164[] portRout;
-    protected PortStdLogicVector portDconf;
+    private PortStdLogic1164 portClk;
+    private PortStdLogic1164 portRst;
+    private PortStdLogic1164 portEnOut;
 
-    protected int[] vectorIn;
-    protected int idxDin;
-    protected boolean start;
+    private PortStdLogic1164 portRdy;
+    private PortStdLogicVector[] portDout;
+    private PortStdLogic1164[] portRout;
+    private PortStdLogicVector portDconf;
+    private int[] vectorIn;
+    private int idxDin;
+    private boolean start;
 
     /**
      * Object Constructor. By default, an input queue of an output is created.
@@ -97,17 +103,17 @@ public class GenericIn extends SimObject
      */
     private void init() {
         setCompName("IN");
-        idxDin = 0;
-        delay = defaultdelay;
-        start = true;
+        setIdxDin(0);
+        setDelay(getDefaultdelay());
+        setStart(true);
         constructStandardValues();
         constructPorts();
-        enableAnimationFlag = SetupManager.getBoolean("Hades.LayerTable.RtlibAnimation", false);
-        vectorIn = new int[(QTDE_PORTS * 10) + 2];
-        vectorIn[0] = 1;
-        vectorIn[1] = 0x00000501;//Sends the value 5 for the component with ID 1 by default.
-        for (int i = 2; i < vectorIn.length; i++) {
-            vectorIn[i] = i - 2;
+        setEnableAnimationFlag(SetupManager.getBoolean("Hades.LayerTable.RtlibAnimation", false));
+        setVectorIn(new int[(getQTDE_PORTS() * 10) + 2]);
+        getVectorIn()[0] = 1;
+        getVectorIn()[1] = 0x00000501;//Sends the value 5 for the component with ID 1 by default.
+        for (int i = 2; i < getVectorIn().length; i++) {
+            getVectorIn()[i] = i - 2;
         }
     }
 
@@ -117,52 +123,52 @@ public class GenericIn extends SimObject
      */
     public void constructPorts() {
 
-        portClk = new PortStdLogic1164(this, "clk", Port.IN, null);
-        portEnOut = new PortStdLogic1164(this, "en", Port.OUT, null);
-        portRst = new PortStdLogic1164(this, "rst", Port.IN, null);
-        portRdy = new PortStdLogic1164(this, "rdy", Port.IN, null);
-        portDconf = new PortStdLogicVector(this, "dconf", Port.OUT, null, 32);
+        setPortClk(new PortStdLogic1164(this, "clk", Port.IN, null));
+        setPortEnOut(new PortStdLogic1164(this, "en", Port.OUT, null));
+        setPortRst(new PortStdLogic1164(this, "rst", Port.IN, null));
+        setPortRdy(new PortStdLogic1164(this, "rdy", Port.IN, null));
+        setPortDconf(new PortStdLogicVector(this, "dconf", Port.OUT, null, 32));
 
-        portRout = new PortStdLogic1164[QTDE_PORTS];
-        portDout = new PortStdLogicVector[QTDE_PORTS];
+        setPortRout(new PortStdLogic1164[getQTDE_PORTS()]);
+        setPortDout(new PortStdLogicVector[getQTDE_PORTS()]);
 
-        for (int i = 0; i < QTDE_PORTS; i++) {
-            portRout[i] = new PortStdLogic1164(this, "rout" + Integer.toString(i + 1), Port.OUT, null);
-            portDout[i] = new PortStdLogicVector(this, "dout" + Integer.toString(i + 1), Port.OUT, null, 16);
+        for (int i = 0; i < getQTDE_PORTS(); i++) {
+            getPortRout()[i] = new PortStdLogic1164(this, "rout" + Integer.toString(i + 1), Port.OUT, null);
+            getPortDout()[i] = new PortStdLogicVector(this, "dout" + Integer.toString(i + 1), Port.OUT, null, 16);
         }
 
-        ports = new Port[TOT_PORTS];
+        ports = new Port[getTOT_PORTS()];
 
         int idx = 0;
 
-        for (int i = 0; i < QTDE_PORTS; i++) {
-            ports[idx] = portRout[i];
+        for (int i = 0; i < getQTDE_PORTS(); i++) {
+            ports[idx] = getPortRout()[i];
             idx++;
-            ports[idx] = portDout[i];
+            ports[idx] = getPortDout()[i];
             idx++;
         }
 
-        ports[idx] = portClk;
+        ports[idx] = getPortClk();
         idx++;
-        ports[idx] = portRst;
+        ports[idx] = getPortRst();
         idx++;
-        ports[idx] = portEnOut;
+        ports[idx] = getPortEnOut();
         idx++;
-        ports[idx] = portDconf;
+        ports[idx] = getPortDconf();
         idx++;
-        ports[idx] = portRdy;
+        ports[idx] = getPortRdy();
     }
 
     /**
      * Method responsible to set the data vector to be delivered to the outputs.
      *
-     * @param vector - Vector that will be delivered to the outputs
+     * @param vectorIn - Vector that will be delivered to the outputs
      */
-    public void setVectorIn(int[] vector) {
-        vectorIn = vector;
+    public void setVectorIn(int[] vectorIn) {
+        this.vectorIn = vectorIn;
         System.out.println("Data Loaded from main class:");
-        for (int i = 0; i < vectorIn.length; i++) {
-            System.out.print(Integer.toString(vectorIn[i]) + " ");
+        for (int i = 0; i < getVectorIn().length; i++) {
+            System.out.print(Integer.toString(getVectorIn()[i]) + " ");
         }
         System.out.println("");
     }
@@ -175,9 +181,9 @@ public class GenericIn extends SimObject
      */
     public void setCompName(String l) {
         if (l.equals("")) {
-            this.componentType = ".";
+            this.setComponentType(".");
         } else {
-            this.componentType = l;
+            this.setComponentType(l);
         }
     }
 
@@ -196,117 +202,117 @@ public class GenericIn extends SimObject
         double time;
         boolean isX = false;
 
-        Signal[] signalRout = new Signal[QTDE_PORTS];
-        Signal[] signalDout = new Signal[QTDE_PORTS];
+        Signal[] signalRout = new Signal[getQTDE_PORTS()];
+        Signal[] signalDout = new Signal[getQTDE_PORTS()];
         Signal signalEnOut;
         Signal signalDconf = null;
 
-        if (portClk.getSignal() == null) {
+        if (getPortClk().getSignal() == null) {
             isX = true;
-        } else if (portRst.getSignal() == null) {
+        } else if (getPortRst().getSignal() == null) {
             isX = true;
-        } else if (portEnOut.getSignal() == null) {
+        } else if (getPortEnOut().getSignal() == null) {
             isX = true;
         } else {
-            for (int i = 0; i < QTDE_PORTS; i++) {
-                if (portRout[i].getSignal() == null || portDout[i] == null) {
+            for (int i = 0; i < getQTDE_PORTS(); i++) {
+                if (getPortRout()[i].getSignal() == null || getPortDout()[i] == null) {
                     isX = true;
                 }
             }
         }
 
-        StdLogic1164 valueRst = portRst.getValueOrU();
+        StdLogic1164 valueRst = getPortRst().getValueOrU();
         StdLogic1164 enOut;
-        StdLogic1164[] rOut = new StdLogic1164[QTDE_PORTS];
-        StdLogicVector[] saida = new StdLogicVector[QTDE_PORTS];
+        StdLogic1164[] rOut = new StdLogic1164[getQTDE_PORTS()];
+        StdLogicVector[] saida = new StdLogicVector[getQTDE_PORTS()];
 
         if (isX || valueRst.is_1()) {
-            idxDin = 0;
-            start = true;
+            setIdxDin(0);
+            setStart(true);
 
-            for (int i = 0; i < QTDE_PORTS; i++) {
+            for (int i = 0; i < getQTDE_PORTS(); i++) {
                 //para portDout
-                if ((signalDout[i] = portDout[i].getSignal()) != null) { // get output
+                if ((signalDout[i] = getPortDout()[i].getSignal()) != null) { // get output
                     saida[i] = new StdLogicVector(32);
-                    saida[i] = vector_UUU.copy();
-                    time = simulator.getSimTime() + delay;
-                    simulator.scheduleEvent(new SimEvent(signalDout[i], time, saida[i], portDout[i]));
+                    saida[i] = getVector_UUU().copy();
+                    time = simulator.getSimTime() + getDelay();
+                    simulator.scheduleEvent(new SimEvent(signalDout[i], time, saida[i], getPortDout()[i]));
                 }
 
                 //para portRout
-                if ((signalRout[i] = portRout[i].getSignal()) != null) { // get output
+                if ((signalRout[i] = getPortRout()[i].getSignal()) != null) { // get output
                     rOut[i] = new StdLogic1164(2);
-                    time = simulator.getSimTime() + delay;
-                    simulator.scheduleEvent(SimEvent1164.createNewSimEvent(signalRout[i], time, rOut[i], portRout[i]));
+                    time = simulator.getSimTime() + getDelay();
+                    simulator.scheduleEvent(SimEvent1164.createNewSimEvent(signalRout[i], time, rOut[i], getPortRout()[i]));
                 }
             }
 
             //para portEnOut
-            if ((signalEnOut = portEnOut.getSignal()) != null) { // get output
+            if ((signalEnOut = getPortEnOut().getSignal()) != null) { // get output
                 enOut = new StdLogic1164(2);
-                time = simulator.getSimTime() + delay;
-                simulator.scheduleEvent(SimEvent1164.createNewSimEvent(signalEnOut, time, enOut, portEnOut));
+                time = simulator.getSimTime() + getDelay();
+                simulator.scheduleEvent(SimEvent1164.createNewSimEvent(signalEnOut, time, enOut, getPortEnOut()));
             }
         } else {
 
-            SignalStdLogic1164 clk = (SignalStdLogic1164) portClk.getSignal();
+            SignalStdLogic1164 clk = (SignalStdLogic1164) getPortClk().getSignal();
 
             if (clk.hasRisingEdge()) {
-                if (start) {
-                    if (idxDin < vectorIn[0]) {
-                        idxDin++;
+                if (isStart()) {
+                    if (getIdxDin() < getVectorIn()[0]) {
+                        setIdxDin(getIdxDin() + 1);
 
-                        if ((signalDconf = portDconf.getSignal()) != null) {
+                        if ((signalDconf = getPortDconf().getSignal()) != null) {
                             StdLogicVector conf_out = new StdLogicVector(32);
-                            conf_out.setValue(vectorIn[idxDin]);			//aqui ocorre a chamada para a computação da saída.
-                            time = simulator.getSimTime() + delay;
-                            simulator.scheduleEvent(new SimEvent(signalDconf, time, conf_out, portDconf));
+                            conf_out.setValue(getVectorIn()[getIdxDin()]);			//aqui ocorre a chamada para a computação da saída.
+                            time = simulator.getSimTime() + getDelay();
+                            simulator.scheduleEvent(new SimEvent(signalDconf, time, conf_out, getPortDconf()));
                         }
                     } else {
-                        idxDin++;
-                        start = false;
-                        if ((signalDconf = portDconf.getSignal()) != null) {
+                        setIdxDin(getIdxDin() + 1);
+                        setStart(false);
+                        if ((signalDconf = getPortDconf().getSignal()) != null) {
                             StdLogicVector conf_out = new StdLogicVector(32);
                             conf_out.setValue(0);			//aqui ocorre a chamada para a computação da saída.
-                            time = simulator.getSimTime() + delay;
-                            simulator.scheduleEvent(new SimEvent(signalDconf, time, conf_out, portDconf));
+                            time = simulator.getSimTime() + getDelay();
+                            simulator.scheduleEvent(new SimEvent(signalDconf, time, conf_out, getPortDconf()));
                         }
                     }
                 } else {
-                    for (int i = 0; i < QTDE_PORTS; i++) {
-                        if (idxDin < vectorIn.length) {
+                    for (int i = 0; i < getQTDE_PORTS(); i++) {
+                        if (getIdxDin() < getVectorIn().length) {
 
                             //para portDout
-                            if ((signalDout[i] = portDout[i].getSignal()) != null) { // get output
+                            if ((signalDout[i] = getPortDout()[i].getSignal()) != null) { // get output
                                 saida[i] = new StdLogicVector(32);
-                                saida[i].setValue(vectorIn[idxDin]);
-                                time = simulator.getSimTime() + delay;
-                                simulator.scheduleEvent(new SimEvent(signalDout[i], time, saida[i], portDout[i]));
+                                saida[i].setValue(getVectorIn()[getIdxDin()]);
+                                time = simulator.getSimTime() + getDelay();
+                                simulator.scheduleEvent(new SimEvent(signalDout[i], time, saida[i], getPortDout()[i]));
                             }
 
                             //para portRout
-                            if ((signalRout[i] = portRout[i].getSignal()) != null) { // get output
+                            if ((signalRout[i] = getPortRout()[i].getSignal()) != null) { // get output
                                 rOut[i] = new StdLogic1164(3);
-                                time = simulator.getSimTime() + delay;
-                                simulator.scheduleEvent(SimEvent1164.createNewSimEvent(signalRout[i], time, rOut[i], portRout[i]));
+                                time = simulator.getSimTime() + getDelay();
+                                simulator.scheduleEvent(SimEvent1164.createNewSimEvent(signalRout[i], time, rOut[i], getPortRout()[i]));
                             }
-                            idxDin++;
+                            setIdxDin(getIdxDin() + 1);
                         } else {
                             //para portRout
-                            if ((signalRout[i] = portRout[i].getSignal()) != null) { // get output
+                            if ((signalRout[i] = getPortRout()[i].getSignal()) != null) { // get output
                                 rOut[i] = new StdLogic1164(2);
-                                time = simulator.getSimTime() + delay;
-                                simulator.scheduleEvent(SimEvent1164.createNewSimEvent(signalRout[i], time, rOut[i], portRout[i]));
+                                time = simulator.getSimTime() + getDelay();
+                                simulator.scheduleEvent(SimEvent1164.createNewSimEvent(signalRout[i], time, rOut[i], getPortRout()[i]));
                             }
                         }
                     }
                 }
 
                 //para portEnOut
-                if ((signalEnOut = portEnOut.getSignal()) != null) { // get output
+                if ((signalEnOut = getPortEnOut().getSignal()) != null) { // get output
                     enOut = new StdLogic1164(3);
-                    time = simulator.getSimTime() + delay;
-                    simulator.scheduleEvent(SimEvent1164.createNewSimEvent(signalEnOut, time, enOut, portEnOut));
+                    time = simulator.getSimTime() + getDelay();
+                    simulator.scheduleEvent(SimEvent1164.createNewSimEvent(signalEnOut, time, enOut, getPortEnOut()));
                 }
             }
         }
@@ -331,7 +337,7 @@ public class GenericIn extends SimObject
     @Override
     public void constructDynamicSymbol() {
         int X = (600 + (2 * 600));
-        int Y = (600 + (QTDE_PORTS * 2 * 600));
+        int Y = (600 + (getQTDE_PORTS() * 2 * 600));
         symbol = new Symbol();
         symbol.setParent(this);
 
@@ -344,42 +350,42 @@ public class GenericIn extends SimObject
         symbol.addMember(rec);
 
         Label label_nome = new Label();
-        label_nome.initialize(Integer.toString(X / 2) + " " + Integer.toString(Y / 2) + " 2 " + componentType);
+        label_nome.initialize(Integer.toString(X / 2) + " " + Integer.toString(Y / 2) + " 2 " + getComponentType());
         symbol.addMember(label_nome);
 
         BusPortSymbol busportsymbol;
         PortSymbol portsymbol;
 
         portsymbol = new PortSymbol();
-        portsymbol.initialize("1200 " + Integer.toString(Y) + " " + portClk.getName());
+        portsymbol.initialize("1200 " + Integer.toString(Y) + " " + getPortClk().getName());
         symbol.addMember(portsymbol);
 
         portsymbol = new PortSymbol();
-        portsymbol.initialize("600 " + Integer.toString(Y) + " " + portRst.getName());
+        portsymbol.initialize("600 " + Integer.toString(Y) + " " + getPortRst().getName());
         symbol.addMember(portsymbol);
 
         portsymbol = new PortSymbol();
-        portsymbol.initialize("1200 0 " + portRdy.getName());
+        portsymbol.initialize("1200 0 " + getPortRdy().getName());
         symbol.addMember(portsymbol);
 
         portsymbol = new PortSymbol();
-        portsymbol.initialize("600 0 " + portEnOut.getName());
+        portsymbol.initialize("600 0 " + getPortEnOut().getName());
         symbol.addMember(portsymbol);
 
         busportsymbol = new BusPortSymbol();
-        busportsymbol.initialize("1800 " + Integer.toString(Y) + " " + portDconf.getName());
+        busportsymbol.initialize("1800 " + Integer.toString(Y) + " " + getPortDconf().getName());
         symbol.addMember(busportsymbol);
 
         Y = 600;
 
-        for (int i = 0; i < QTDE_PORTS; i++) {
+        for (int i = 0; i < getQTDE_PORTS(); i++) {
             portsymbol = new PortSymbol();
-            portsymbol.initialize(Integer.toString(X) + " " + Integer.toString(Y) + " " + portRout[i].getName());
+            portsymbol.initialize(Integer.toString(X) + " " + Integer.toString(Y) + " " + getPortRout()[i].getName());
             symbol.addMember(portsymbol);
             Y += 600;
 
             busportsymbol = new BusPortSymbol();
-            busportsymbol.initialize(Integer.toString(X) + " " + Integer.toString(Y) + " " + portDout[i].getName());
+            busportsymbol.initialize(Integer.toString(X) + " " + Integer.toString(Y) + " " + getPortDout()[i].getName());
             symbol.addMember(busportsymbol);
 
             Y += 600;
@@ -395,9 +401,9 @@ public class GenericIn extends SimObject
     @Override
     public void write(java.io.PrintWriter ps) {
         ps.print(" " + versionId
-                + " " + n_bits
-                + " " + delay
-                + " " + QTDE_PORTS
+                + " " + getN_bits()
+                + " " + getDelay()
+                + " " + getQTDE_PORTS()
                 + " n");
     }
 
@@ -416,22 +422,22 @@ public class GenericIn extends SimObject
         try {
             if (n_tokens == 0) {
                 versionId = 1001;
-                n_bits = 16;
+                setN_bits(16);
                 constructStandardValues();
                 constructPorts();
             } else if (n_tokens == 1) {
                 versionId = Integer.parseInt(st.nextToken());
-                n_bits = 16;
+                setN_bits(16);
                 constructStandardValues();
                 constructPorts();
             } else if (n_tokens == 2) {
                 versionId = Integer.parseInt(st.nextToken());
-                n_bits = Integer.parseInt(st.nextToken());
+                setN_bits(Integer.parseInt(st.nextToken()));
                 constructStandardValues();
                 constructPorts();
             } else if (n_tokens == 3 || n_tokens == 4 || n_tokens == 5) {
                 versionId = Integer.parseInt(st.nextToken());
-                n_bits = Integer.parseInt(st.nextToken());
+                setN_bits(Integer.parseInt(st.nextToken()));
                 constructStandardValues();
                 constructPorts();
                 setDelay(st.nextToken());
@@ -450,12 +456,12 @@ public class GenericIn extends SimObject
      * bit vectors.
      */
     protected void constructStandardValues() {
-        vector_UUU = new StdLogicVector(n_bits, Const1164.__U);
-        vector_XXX = new StdLogicVector(n_bits, Const1164.__X);
-        vector_ZZZ = new StdLogicVector(n_bits, Const1164.__Z);
-        vector_000 = new StdLogicVector(n_bits, Const1164.__0);
-        vector_111 = new StdLogicVector(n_bits, Const1164.__1);
-        vector = vector_UUU.copy();
+        setVector_UUU(new StdLogicVector(getN_bits(), Const1164.__U));
+        setVector_XXX(new StdLogicVector(getN_bits(), Const1164.__X));
+        setVector_ZZZ(new StdLogicVector(getN_bits(), Const1164.__Z));
+        setVector_000(new StdLogicVector(getN_bits(), Const1164.__0));
+        setVector_111(new StdLogicVector(getN_bits(), Const1164.__1));
+        setVector(getVector_UUU().copy());
     }
 
     /**
@@ -476,7 +482,7 @@ public class GenericIn extends SimObject
      */
     public void setDelay(double _delay) {
         if (_delay < 0) {
-            delay = defaultdelay;
+            delay = getDefaultdelay();
         } else {
             delay = _delay;
         }
@@ -490,11 +496,11 @@ public class GenericIn extends SimObject
      */
     public void setDelay(String s) {
         try {
-            delay = new Double(s).doubleValue();
+            setDelay(new Double(s).doubleValue());
         } catch (Exception e) {
             message("-E- Illegal number format in String '" + s + "'");
-            message("-w- Using default value: " + defaultdelay);
-            delay = defaultdelay;
+            message("-w- Using default value: " + getDefaultdelay());
+            setDelay(getDefaultdelay());
         }
     }
 
@@ -524,14 +530,14 @@ public class GenericIn extends SimObject
 
             if (tmp instanceof StdLogicVector) { // called via assign: update vector
                 StdLogicVector slv = (StdLogicVector) tmp;
-                vector = slv.copy();
+                setVector(slv.copy());
             } else { // 'traditional' wakeup: do nothing here, just update the symbol
                 ;
             }
         } catch (Exception e) {
             System.err.println("-E- " + toString() + ".wakeup: " + arg);
         }
-        if (enableAnimationFlag) {
+        if (isEnableAnimationFlag()) {
             updateSymbol();
         }
     }
@@ -541,10 +547,10 @@ public class GenericIn extends SimObject
      */
     public void updateSymbol() {
         if (debug) {
-            message("-I- " + toString() + ".updateSymbol: " + vector);
+            message("-I- " + toString() + ".updateSymbol: " + getVector());
         }
 
-        if (!enableAnimationFlag) {
+        if (!isEnableAnimationFlag()) {
             return;
         }
         if (symbol == null || !symbol.isVisible()) {
@@ -558,5 +564,334 @@ public class GenericIn extends SimObject
             return;
         }
         symbol.painter.paint(symbol, 50 /*msec*/);
+    }
+
+    /**
+     * @return the n_bits
+     */
+    public int getN_bits() {
+        return n_bits;
+    }
+
+    /**
+     * @param n_bits the n_bits to set
+     */
+    public void setN_bits(int n_bits) {
+        this.n_bits = n_bits;
+    }
+
+    /**
+     * @return the vector
+     */
+    public StdLogicVector getVector() {
+        return vector;
+    }
+
+    /**
+     * @param vector the vector to set
+     */
+    public void setVector(StdLogicVector vector) {
+        this.vector = vector;
+    }
+
+    /**
+     * @return the vector_UUU
+     */
+    public StdLogicVector getVector_UUU() {
+        return vector_UUU;
+    }
+
+    /**
+     * @param vector_UUU the vector_UUU to set
+     */
+    public void setVector_UUU(StdLogicVector vector_UUU) {
+        this.vector_UUU = vector_UUU;
+    }
+
+    /**
+     * @return the vector_XXX
+     */
+    public StdLogicVector getVector_XXX() {
+        return vector_XXX;
+    }
+
+    /**
+     * @param vector_XXX the vector_XXX to set
+     */
+    public void setVector_XXX(StdLogicVector vector_XXX) {
+        this.vector_XXX = vector_XXX;
+    }
+
+    /**
+     * @return the vector_ZZZ
+     */
+    public StdLogicVector getVector_ZZZ() {
+        return vector_ZZZ;
+    }
+
+    /**
+     * @param vector_ZZZ the vector_ZZZ to set
+     */
+    public void setVector_ZZZ(StdLogicVector vector_ZZZ) {
+        this.vector_ZZZ = vector_ZZZ;
+    }
+
+    /**
+     * @return the vector_000
+     */
+    public StdLogicVector getVector_000() {
+        return vector_000;
+    }
+
+    /**
+     * @param vector_000 the vector_000 to set
+     */
+    public void setVector_000(StdLogicVector vector_000) {
+        this.vector_000 = vector_000;
+    }
+
+    /**
+     * @return the vector_111
+     */
+    public StdLogicVector getVector_111() {
+        return vector_111;
+    }
+
+    /**
+     * @param vector_111 the vector_111 to set
+     */
+    public void setVector_111(StdLogicVector vector_111) {
+        this.vector_111 = vector_111;
+    }
+
+    /**
+     * @return the vectorOutputPort
+     */
+    public PortStdLogicVector getVectorOutputPort() {
+        return vectorOutputPort;
+    }
+
+    /**
+     * @param vectorOutputPort the vectorOutputPort to set
+     */
+    public void setVectorOutputPort(PortStdLogicVector vectorOutputPort) {
+        this.vectorOutputPort = vectorOutputPort;
+    }
+
+    /**
+     * @return the defaultdelay
+     */
+    public double getDefaultdelay() {
+        return defaultdelay;
+    }
+
+    /**
+     * @param defaultdelay the defaultdelay to set
+     */
+    public void setDefaultdelay(double defaultdelay) {
+        this.defaultdelay = defaultdelay;
+    }
+
+    /**
+     * @return the enableAnimationFlag
+     */
+    public boolean isEnableAnimationFlag() {
+        return enableAnimationFlag;
+    }
+
+    /**
+     * @param enableAnimationFlag the enableAnimationFlag to set
+     */
+    public void setEnableAnimationFlag(boolean enableAnimationFlag) {
+        this.enableAnimationFlag = enableAnimationFlag;
+    }
+
+    /**
+     * @return the valueLabel
+     */
+    public ColoredValueLabel getValueLabel() {
+        return valueLabel;
+    }
+
+    /**
+     * @param valueLabel the valueLabel to set
+     */
+    public void setValueLabel(ColoredValueLabel valueLabel) {
+        this.valueLabel = valueLabel;
+    }
+
+    /**
+     * @return the labelFormatter
+     */
+    public FlexibleLabelFormatter getLabelFormatter() {
+        return labelFormatter;
+    }
+
+    /**
+     * @param labelFormatter the labelFormatter to set
+     */
+    public void setLabelFormatter(FlexibleLabelFormatter labelFormatter) {
+        this.labelFormatter = labelFormatter;
+    }
+
+    /**
+     * @return the componentType
+     */
+    public String getComponentType() {
+        return componentType;
+    }
+
+    /**
+     * @param componentType the componentType to set
+     */
+    public void setComponentType(String componentType) {
+        this.componentType = componentType;
+    }
+
+    /**
+     * @return the QTDE_PORTS
+     */
+    public int getQTDE_PORTS() {
+        return QTDE_PORTS;
+    }
+
+    /**
+     * @return the TOT_PORTS
+     */
+    public int getTOT_PORTS() {
+        return TOT_PORTS;
+    }
+
+    /**
+     * @return the portClk
+     */
+    public PortStdLogic1164 getPortClk() {
+        return portClk;
+    }
+
+    /**
+     * @param portClk the portClk to set
+     */
+    public void setPortClk(PortStdLogic1164 portClk) {
+        this.portClk = portClk;
+    }
+
+    /**
+     * @return the portRst
+     */
+    public PortStdLogic1164 getPortRst() {
+        return portRst;
+    }
+
+    /**
+     * @param portRst the portRst to set
+     */
+    public void setPortRst(PortStdLogic1164 portRst) {
+        this.portRst = portRst;
+    }
+
+    /**
+     * @return the portEnOut
+     */
+    public PortStdLogic1164 getPortEnOut() {
+        return portEnOut;
+    }
+
+    /**
+     * @param portEnOut the portEnOut to set
+     */
+    public void setPortEnOut(PortStdLogic1164 portEnOut) {
+        this.portEnOut = portEnOut;
+    }
+
+    /**
+     * @return the portRdy
+     */
+    public PortStdLogic1164 getPortRdy() {
+        return portRdy;
+    }
+
+    /**
+     * @param portRdy the portRdy to set
+     */
+    public void setPortRdy(PortStdLogic1164 portRdy) {
+        this.portRdy = portRdy;
+    }
+
+    /**
+     * @return the portDout
+     */
+    public PortStdLogicVector[] getPortDout() {
+        return portDout;
+    }
+
+    /**
+     * @param portDout the portDout to set
+     */
+    public void setPortDout(PortStdLogicVector[] portDout) {
+        this.portDout = portDout;
+    }
+
+    /**
+     * @return the portRout
+     */
+    public PortStdLogic1164[] getPortRout() {
+        return portRout;
+    }
+
+    /**
+     * @param portRout the portRout to set
+     */
+    public void setPortRout(PortStdLogic1164[] portRout) {
+        this.portRout = portRout;
+    }
+
+    /**
+     * @return the portDconf
+     */
+    public PortStdLogicVector getPortDconf() {
+        return portDconf;
+    }
+
+    /**
+     * @param portDconf the portDconf to set
+     */
+    public void setPortDconf(PortStdLogicVector portDconf) {
+        this.portDconf = portDconf;
+    }
+
+    /**
+     * @return the vectorIn
+     */
+    public int[] getVectorIn() {
+        return vectorIn;
+    }
+
+    /**
+     * @return the idxDin
+     */
+    public int getIdxDin() {
+        return idxDin;
+    }
+
+    /**
+     * @param idxDin the idxDin to set
+     */
+    public void setIdxDin(int idxDin) {
+        this.idxDin = idxDin;
+    }
+
+    /**
+     * @return the start
+     */
+    public boolean isStart() {
+        return start;
+    }
+
+    /**
+     * @param start the start to set
+     */
+    public void setStart(boolean start) {
+        this.start = start;
     }
 }

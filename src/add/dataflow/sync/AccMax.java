@@ -28,8 +28,8 @@ public class AccMax extends GenericAcc {
      */
     @Override
     public void reset() {
-        immediate = id;
-        counter = immediate;
+        setImmediate(getId());
+        setCounter(getImmediate());
         firstScan = true;
     }
 
@@ -42,11 +42,11 @@ public class AccMax extends GenericAcc {
     @Override
     protected void accumulate(int data) {
         if (firstScan) {
-            acc = data;
+            setAcc(data);
             firstScan = false;
-        } else if (data > acc) {
-            acc = data;
+        } else if (data > getAcc()) {
+            setAcc(data);
         }
-        setString(Integer.toString(id), Integer.toString(immediate));
+        setString(Integer.toString(getId()), Integer.toString(getImmediate()));
     }
 }

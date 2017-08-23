@@ -30,12 +30,12 @@ public class ModI extends GenericI {
      */
     @Override
     public int compute(int data) {
-        if (immediate == 0) {
-            setString(Integer.toString(id), Integer.toString(immediate));
+        if (getImmediate() == 0) {
+            setString(Integer.toString(getId()), Integer.toString(getImmediate()));
             return 0;
         } else {
-            setString(Integer.toString(id), Integer.toString(immediate));
-            return (int) (data % immediate);
+            setString(Integer.toString(getId()), Integer.toString(getImmediate()));
+            return (int) (data % getImmediate());
         }
     }
 }

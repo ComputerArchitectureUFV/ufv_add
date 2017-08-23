@@ -16,7 +16,7 @@ public class AccMul extends GenericAcc {
      */
     public AccMul() {
         super();
-        acc = 1;
+        setAcc(1);
         setCompName("ACC_MUL");
     }
 
@@ -26,9 +26,9 @@ public class AccMul extends GenericAcc {
      */
     @Override
     public void reset() {
-        immediate = id;
-        counter = immediate;
-        acc = 1;
+        setImmediate(getId());
+        setCounter(getImmediate());
+        setAcc(1);
     }
 
     /**
@@ -38,7 +38,7 @@ public class AccMul extends GenericAcc {
      */
     @Override
     protected void accumulate(int data) {
-        acc = acc * data;
-        setString(Integer.toString(id), Integer.toString(immediate));
+        setAcc(getAcc() * data);
+        setString(Integer.toString(getId()), Integer.toString(getImmediate()));
     }
 }

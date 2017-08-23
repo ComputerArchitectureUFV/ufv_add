@@ -31,8 +31,8 @@ public class AndI extends GenericI {
      */
     @Override
     public int compute(int data) {
-        setString(Integer.toString(id), Integer.toString(immediate));
-        return (int) (data & immediate);
+        setString(Integer.toString(getId()), Integer.toString(getImmediate()));
+        return (int) (data & getImmediate());
     }
 
 }

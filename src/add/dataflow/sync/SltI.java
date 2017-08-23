@@ -30,7 +30,7 @@ public class SltI extends GenericI {
      */
     @Override
     public int compute(int data) {
-        setString(Integer.toString(id), Integer.toString(immediate));
-        return (int) ((data < immediate) ? 1 : 0);
+        setString(Integer.toString(getId()), Integer.toString(getImmediate()));
+        return (int) ((data < getImmediate()) ? 1 : 0);
     }
 }

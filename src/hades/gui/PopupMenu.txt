@@ -8,70 +8,70 @@
 # MenuItem parent_menu_name item_name callback_method_name callback_argument_or_null
 #
 #
-Menu hebeSync
-SubMenu hebeSync accumulator
-MenuItem accumulator syncAccAdd         doPopupCreate hebe.dataflow.sync.AccAdd
-MenuItem accumulator syncAccMax         doPopupCreate hebe.dataflow.sync.AccMax
-MenuItem accumulator syncAccMin         doPopupCreate hebe.dataflow.sync.AccMin
-MenuItem accumulator syncAccMul         doPopupCreate hebe.dataflow.sync.AccMul
-SubMenu hebeSync arithmetic
-MenuItem arithmetic syncAbs              doPopupCreate hebe.dataflow.sync.Abs
+Menu addSync
+SubMenu addSync accumulator
+MenuItem accumulator syncAccAdd         doPopupCreate add.dataflow.sync.AccAdd
+MenuItem accumulator syncAccMax         doPopupCreate add.dataflow.sync.AccMax
+MenuItem accumulator syncAccMin         doPopupCreate add.dataflow.sync.AccMin
+MenuItem accumulator syncAccMul         doPopupCreate add.dataflow.sync.AccMul
+SubMenu addSync arithmetic
+MenuItem arithmetic syncAbs              doPopupCreate add.dataflow.sync.Abs
 MenuSeparator arithmetic
-MenuItem arithmetic syncAdd              doPopupCreate hebe.dataflow.sync.Add
-MenuItem arithmetic syncDiv              doPopupCreate hebe.dataflow.sync.Div
-MenuItem arithmetic syncMod              doPopupCreate hebe.dataflow.sync.Mod
-MenuItem arithmetic syncMul              doPopupCreate hebe.dataflow.sync.Mul
-MenuItem arithmetic syncSub              doPopupCreate hebe.dataflow.sync.Sub
+MenuItem arithmetic syncAdd              doPopupCreate add.dataflow.sync.Add
+MenuItem arithmetic syncDiv              doPopupCreate add.dataflow.sync.Div
+MenuItem arithmetic syncMod              doPopupCreate add.dataflow.sync.Mod
+MenuItem arithmetic syncMul              doPopupCreate add.dataflow.sync.Mul
+MenuItem arithmetic syncSub              doPopupCreate add.dataflow.sync.Sub
 MenuSeparator arithmetic
-MenuItem arithmetic syncAddI             doPopupCreate hebe.dataflow.sync.AddI
-MenuItem arithmetic syncDivI             doPopupCreate hebe.dataflow.sync.DivI
-MenuItem arithmetic syncModI             doPopupCreate hebe.dataflow.sync.ModI
-MenuItem arithmetic syncMulI             doPopupCreate hebe.dataflow.sync.MulI
-MenuItem arithmetic syncSubI             doPopupCreate hebe.dataflow.sync.SubI
-SubMenu hebeSync branches
-MenuItem branches syncBeq                doPopupCreate hebe.dataflow.sync.Beq
-MenuItem branches syncBne                doPopupCreate hebe.dataflow.sync.Bne
+MenuItem arithmetic syncAddI             doPopupCreate add.dataflow.sync.AddI
+MenuItem arithmetic syncDivI             doPopupCreate add.dataflow.sync.DivI
+MenuItem arithmetic syncModI             doPopupCreate add.dataflow.sync.ModI
+MenuItem arithmetic syncMulI             doPopupCreate add.dataflow.sync.MulI
+MenuItem arithmetic syncSubI             doPopupCreate add.dataflow.sync.SubI
+SubMenu addSync branches
+MenuItem branches syncBeq                doPopupCreate add.dataflow.sync.Beq
+MenuItem branches syncBne                doPopupCreate add.dataflow.sync.Bne
 MenuSeparator branches
-MenuItem branches syncBeqI               doPopupCreate hebe.dataflow.sync.BeqI
-MenuItem branches syncBneI               doPopupCreate hebe.dataflow.sync.BneI
+MenuItem branches syncBeqI               doPopupCreate add.dataflow.sync.BeqI
+MenuItem branches syncBneI               doPopupCreate add.dataflow.sync.BneI
 MenuSeparator branches
-MenuItem branches syncMerge              doPopupCreate hebe.dataflow.sync.Merge
-SubMenu hebeSync comparison
-MenuItem comparison syncMax              doPopupCreate hebe.dataflow.sync.Max
-MenuItem comparison syncMin              doPopupCreate hebe.dataflow.sync.Min
-MenuItem comparison syncSlt              doPopupCreate hebe.dataflow.sync.Slt
-MenuItem comparison syncSltI             doPopupCreate hebe.dataflow.sync.SltI
-SubMenu hebeSync histogram
-MenuItem histogram syncHistogram         doPopupCreate hebe.dataflow.sync.Histogram
-SubMenu hebeSync inOut
-MenuItem inOut syncIn1                 doPopupCreate hebe.dataflow.sync.In1
-MenuItem inOut syncIn2                 doPopupCreate hebe.dataflow.sync.In2
-MenuItem inOut syncIn4                 doPopupCreate hebe.dataflow.sync.In4
-MenuItem inOut syncIn8                 doPopupCreate hebe.dataflow.sync.In8
-MenuItem inOut syncIn16                doPopupCreate hebe.dataflow.sync.In16
-MenuItem inOut syncIn32                doPopupCreate hebe.dataflow.sync.In32
+MenuItem branches syncMerge              doPopupCreate add.dataflow.sync.Merge
+SubMenu addSync comparison
+MenuItem comparison syncMax              doPopupCreate add.dataflow.sync.Max
+MenuItem comparison syncMin              doPopupCreate add.dataflow.sync.Min
+MenuItem comparison syncSlt              doPopupCreate add.dataflow.sync.Slt
+MenuItem comparison syncSltI             doPopupCreate add.dataflow.sync.SltI
+SubMenu addSync histogram
+MenuItem histogram syncHistogram         doPopupCreate add.dataflow.sync.Histogram
+SubMenu addSync inOut
+MenuItem inOut syncIn1                 doPopupCreate add.dataflow.sync.In1
+MenuItem inOut syncIn2                 doPopupCreate add.dataflow.sync.In2
+MenuItem inOut syncIn4                 doPopupCreate add.dataflow.sync.In4
+MenuItem inOut syncIn8                 doPopupCreate add.dataflow.sync.In8
+MenuItem inOut syncIn16                doPopupCreate add.dataflow.sync.In16
+MenuItem inOut syncIn32                doPopupCreate add.dataflow.sync.In32
 MenuSeparator inOut
-MenuItem inOut syncOut1                doPopupCreate hebe.dataflow.sync.Out1
-MenuItem inOut syncOut2                doPopupCreate hebe.dataflow.sync.Out2
-MenuItem inOut syncOut4                doPopupCreate hebe.dataflow.sync.Out4
-MenuItem inOut syncOut8                doPopupCreate hebe.dataflow.sync.Out8
-MenuItem inOut syncOut16               doPopupCreate hebe.dataflow.sync.Out16
-MenuItem inOut syncOut32               doPopupCreate hebe.dataflow.sync.Out32
-SubMenu hebeSync logical
-MenuItem logical syncAnd                 doPopupCreate hebe.dataflow.sync.And
-MenuItem logical syncNot                 doPopupCreate hebe.dataflow.sync.Not
-MenuItem logical syncOr                  doPopupCreate hebe.dataflow.sync.Or
+MenuItem inOut syncOut1                doPopupCreate add.dataflow.sync.Out1
+MenuItem inOut syncOut2                doPopupCreate add.dataflow.sync.Out2
+MenuItem inOut syncOut4                doPopupCreate add.dataflow.sync.Out4
+MenuItem inOut syncOut8                doPopupCreate add.dataflow.sync.Out8
+MenuItem inOut syncOut16               doPopupCreate add.dataflow.sync.Out16
+MenuItem inOut syncOut32               doPopupCreate add.dataflow.sync.Out32
+SubMenu addSync logical
+MenuItem logical syncAnd                 doPopupCreate add.dataflow.sync.And
+MenuItem logical syncNot                 doPopupCreate add.dataflow.sync.Not
+MenuItem logical syncOr                  doPopupCreate add.dataflow.sync.Or
 MenuSeparator logical
-MenuItem logical syncAndI                doPopupCreate hebe.dataflow.sync.AndI
-MenuItem logical syncOrI                 doPopupCreate hebe.dataflow.sync.OrI
-SubMenu hebeSync register
-MenuItem register syncRegister                   doPopupCreate hebe.dataflow.sync.Register
-SubMenu hebeSync shift
-MenuItem shift syncShl                   doPopupCreate hebe.dataflow.sync.Shl
-MenuItem shift syncShr                   doPopupCreate hebe.dataflow.sync.Shr
+MenuItem logical syncAndI                doPopupCreate add.dataflow.sync.AndI
+MenuItem logical syncOrI                 doPopupCreate add.dataflow.sync.OrI
+SubMenu addSync register
+MenuItem register syncRegister                   doPopupCreate add.dataflow.sync.Register
+SubMenu addSync shift
+MenuItem shift syncShl                   doPopupCreate add.dataflow.sync.Shl
+MenuItem shift syncShr                   doPopupCreate add.dataflow.sync.Shr
 MenuSeparator shift
-MenuItem shift syncShlI                  doPopupCreate hebe.dataflow.sync.ShlI
-MenuItem shift syncShrI                  doPopupCreate hebe.dataflow.sync.ShrI
+MenuItem shift syncShlI                  doPopupCreate add.dataflow.sync.ShlI
+MenuItem shift syncShrI                  doPopupCreate add.dataflow.sync.ShrI
 #
 Menu wire
 MenuItem wire connect                 doPopupCreateSignal null

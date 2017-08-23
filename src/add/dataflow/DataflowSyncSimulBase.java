@@ -344,94 +344,94 @@ public class DataflowSyncSimulBase {
             gravarArq = new PrintWriter(arq);
 
             //qtde configurações
-            int qtde_conf;
+            int qtdeConf;
             if (rawData[3] % 16 == 0) {
-                qtde_conf = rawData[3];
+                qtdeConf = rawData[3];
                 gravarArq.printf("%d\n", rawData[3]);
             } else {
-                qtde_conf = rawData[3] - (rawData[3] % 16) + 16;
-                gravarArq.printf("%d\n", qtde_conf);
+                qtdeConf = rawData[3] - (rawData[3] % 16) + 16;
+                gravarArq.printf("%d\n", qtdeConf);
             }
             //qtde de entradas
-            int qtde_data_Lines;
-            int qtde_data;
+            int qtdeDataLines;
+            int qtdeData;
             if ((rawData[0] - rawData[3] - 1) % 32 == 0) {
-                qtde_data_Lines = (rawData[0] - rawData[3] - 1) / 32;
-                qtde_data = (rawData[0] - rawData[3] - 1);
-                gravarArq.printf("%d\n", qtde_data_Lines);
+                qtdeDataLines = (rawData[0] - rawData[3] - 1) / 32;
+                qtdeData = (rawData[0] - rawData[3] - 1);
+                gravarArq.printf("%d\n", qtdeDataLines);
             } else {
-                qtde_data_Lines = ((rawData[0] - rawData[3] - 1) - ((rawData[0] - rawData[3] - 1) % 32) + 32) / 32;
-                qtde_data = (rawData[0] - rawData[3] - 1) - ((rawData[0] - rawData[3] - 1) % 32) + 32;
-                gravarArq.printf("%d\n", qtde_data_Lines);
+                qtdeDataLines = ((rawData[0] - rawData[3] - 1) - ((rawData[0] - rawData[3] - 1) % 32) + 32) / 32;
+                qtdeData = (rawData[0] - rawData[3] - 1) - ((rawData[0] - rawData[3] - 1) % 32) + 32;
+                gravarArq.printf("%d\n", qtdeDataLines);
             }
 
             //qtde de saidas
-            int qtde_out_lines;
-            int qtde_out;
+            int qtdeOutLines;
+            int qtdeOut;
             if (outSize % 32 == 0) {
-                qtde_out_lines = outSize / 32;
-                qtde_out = outSize;
-                gravarArq.printf("%d\n", qtde_out_lines);
+                qtdeOutLines = outSize / 32;
+                qtdeOut = outSize;
+                gravarArq.printf("%d\n", qtdeOutLines);
             } else {
-                qtde_out_lines = (outSize - (outSize % 32) + 32) / 32;
-                qtde_out = outSize - (outSize % 32) + 32;
-                gravarArq.printf("%d\n", qtde_out_lines);
+                qtdeOutLines = (outSize - (outSize % 32) + 32) / 32;
+                qtdeOut = outSize - (outSize % 32) + 32;
+                gravarArq.printf("%d\n", qtdeOutLines);
             }
 
             //aqui começa a criação das configurações
             //cria o vetor de configurações
-            int[] conf_vector = new int[qtde_conf];
-            for (int i = 0; i < qtde_conf; i++) {
+            int[] confVector = new int[qtdeConf];
+            for (int i = 0; i < qtdeConf; i++) {
                 if (i < rawData[3]) {
-                    conf_vector[i] = rawData[i + 4];
+                    confVector[i] = rawData[i + 4];
                 } else {
-                    conf_vector[i] = 0;
+                    confVector[i] = 0;
                 }
             }
 
-            String confword = "";
-            String conftmp;
+            String confWord = "";
+            String confTmp;
             //cria uma string com os dados concatenados em binário
-            for (int i = 0; i < qtde_conf; i++) {
-                conftmp = Integer.toBinaryString(conf_vector[i]);
-                if (conftmp.length() < 32) {
-                    for (int j = conftmp.length(); j < 32; j++) {
-                        conftmp = "0" + conftmp;
+            for (int i = 0; i < qtdeConf; i++) {
+                confTmp = Integer.toBinaryString(confVector[i]);
+                if (confTmp.length() < 32) {
+                    for (int j = confTmp.length(); j < 32; j++) {
+                        confTmp = "0" + confTmp;
                     }
                 }
-                confword = conftmp + confword;
+                confWord = confTmp + confWord;
                 if ((i + 1) % 16 == 0) {
-                    gravarArq.println(confword);
-                    confword = "";
+                    gravarArq.println(confWord);
+                    confWord = "";
                 }
             }
 
             //aqui começa a criação dos dados
             //cria o vetor de dados
-            int[] data_vector = new int[qtde_data];
+            int[] dataVector = new int[qtdeData];
 
-            for (int i = 0; i < qtde_data; i++) {
+            for (int i = 0; i < qtdeData; i++) {
                 if (i < (rawData[0] - rawData[3] - 1)) {
-                    data_vector[i] = rawData[i + 4 + rawData[3]];
+                    dataVector[i] = rawData[i + 4 + rawData[3]];
                 } else {
-                    data_vector[i] = 0;
+                    dataVector[i] = 0;
                 }
             }
 
             //cria uma string com os dados concatenados em binário
-            String dataword = "";
-            String datatmp;
-            for (int i = 0; i < qtde_data; i++) {
-                datatmp = Integer.toBinaryString(data_vector[i]);
-                if (datatmp.length() < 16) {
-                    for (int j = datatmp.length(); j < 16; j++) {
-                        datatmp = "0" + datatmp;
+            String dataWord = "";
+            String dataTmp;
+            for (int i = 0; i < qtdeData; i++) {
+                dataTmp = Integer.toBinaryString(dataVector[i]);
+                if (dataTmp.length() < 16) {
+                    for (int j = dataTmp.length(); j < 16; j++) {
+                        dataTmp = "0" + dataTmp;
                     }
                 }
-                dataword = datatmp + dataword;
+                dataWord = dataTmp + dataWord;
                 if ((i + 1) % 32 == 0) {
-                    gravarArq.println(dataword);
-                    dataword = "";
+                    gravarArq.println(dataWord);
+                    dataWord = "";
                 }
             }
             arq.close();

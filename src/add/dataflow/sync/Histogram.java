@@ -19,9 +19,10 @@ import hades.simulator.SimEvent1164;
  */
 public class Histogram extends GenericI {
 
-    protected int[] histogram;
-    protected int counter, decr;
-    protected final int NUMBITS = 16;
+    private int[] histogram;
+    private int counter;
+    private int decr;
+    private int NUMBITS = 16;
 
     /**
      * Object Constructor.
@@ -48,8 +49,8 @@ public class Histogram extends GenericI {
      */
     @Override
     public int compute(int data) {
-        setString(Integer.toString(id), Integer.toString(immediate));
-        return histogram[data]++;
+        setString(Integer.toString(getId()), Integer.toString(getImmediate()));
+        return getHistogram()[data]++;
     }
 
     /**
@@ -59,13 +60,13 @@ public class Histogram extends GenericI {
      */
     @Override
     public void reset() {
-        setString(Integer.toString(id), Integer.toString(immediate));
-        immediate = id;
-        for (int i = 0; i < histogram.length; i++) {
-            histogram[i] = 0;
+        setString(Integer.toString(getId()), Integer.toString(getImmediate()));
+        setImmediate(getId());
+        for (int i = 0; i < getHistogram().length; i++) {
+            getHistogram()[i] = 0;
         }
-        counter = 0;
-        decr = 0;
+        setCounter(0);
+        setDecr(0);
     }
 
     /**
@@ -90,8 +91,8 @@ public class Histogram extends GenericI {
         Signal signalRin = null, signalRout = null, signalDconf = null;
 
         //código para tick_up e Tick_down
-        if ((signalClk = portClk.getSignal()) != null) {
-            SignalStdLogic1164 tick = (SignalStdLogic1164) portClk.getSignal();
+        if ((signalClk = getPortClk().getSignal()) != null) {
+            SignalStdLogic1164 tick = (SignalStdLogic1164) getPortClk().getSignal();
             if (tick.hasRisingEdge()) {
                 tickUp();
             } else if (tick.hasFallingEdge()) {
@@ -102,97 +103,153 @@ public class Histogram extends GenericI {
 
         boolean isX = false;
 
-        if ((signalClk = portClk.getSignal()) == null) {
+        if ((signalClk = getPortClk().getSignal()) == null) {
             isX = true;
-        } else if ((signalRst = portRst.getSignal()) == null) {
+        } else if ((signalRst = getPortRst().getSignal()) == null) {
             isX = true;
-        } else if ((signalEn = portEn.getSignal()) == null) {
+        } else if ((signalEn = getPortEn().getSignal()) == null) {
             isX = true;
-        } else if ((signalDconf = portDconf.getSignal()) == null) {
+        } else if ((signalDconf = getPortDconf().getSignal()) == null) {
             isX = true;
-        } else if ((signalDin = portDin.getSignal()) == null) {
+        } else if ((signalDin = getPortDin().getSignal()) == null) {
             isX = true;
-        } else if ((signalDout = portDout.getSignal()) == null) {
+        } else if ((signalDout = getPortDout().getSignal()) == null) {
             isX = true;
-        } else if ((signalRin = portRin.getSignal()) == null) {
+        } else if ((signalRin = getPortRin().getSignal()) == null) {
             isX = true;
         }
 
-        StdLogic1164 valueRst = portRst.getValueOrU();
+        StdLogic1164 valueRst = getPortRst().getValueOrU();
         StdLogic1164 rOut;
 
         if (isX || valueRst.is_1()) {
             reset();
 
             //para portDout
-            if ((signalDout = portDout.getSignal()) != null) { // get output
+            if ((signalDout = getPortDout().getSignal()) != null) { // get output
                 vector = vector_UUU.copy();
                 time = simulator.getSimTime() + delay;
-                simulator.scheduleEvent(new SimEvent(signalDout, time, vector, portDout));
+                simulator.scheduleEvent(new SimEvent(signalDout, time, vector, getPortDout()));
             }
             //para portRout
-            if ((signalRout = portRout.getSignal()) != null) { // get output
+            if ((signalRout = getPortRout().getSignal()) != null) { // get output
                 rOut = new StdLogic1164(2);
                 time = simulator.getSimTime() + delay;
-                simulator.scheduleEvent(SimEvent1164.createNewSimEvent(signalRout, time, rOut, portRout));
+                simulator.scheduleEvent(SimEvent1164.createNewSimEvent(signalRout, time, rOut, getPortRout()));
             }
         } else {
-            SignalStdLogic1164 clk = (SignalStdLogic1164) portClk.getSignal();
-            StdLogic1164 en = portEn.getValueOrU();
-            StdLogic1164 rIn = portRin.getValueOrU();
+            SignalStdLogic1164 clk = (SignalStdLogic1164) getPortClk().getSignal();
+            StdLogic1164 en = getPortEn().getValueOrU();
+            StdLogic1164 rIn = getPortRin().getValueOrU();
 
             if (clk.hasRisingEdge()) {
                 if (en.is_1()) {
 
-                    StdLogicVector valueDconf = portDconf.getVectorOrUUU();
+                    StdLogicVector valueDconf = getPortDconf().getVectorOrUUU();
                     if (!valueDconf.has_UXZ()) {
-                        signalDconf = portDconf.getSignal();
+                        signalDconf = getPortDconf().getSignal();
                         StdLogicVector conf = (StdLogicVector) signalDconf.getValue();
                         int dImmediate, dId = (int) conf.getValue();
                         dImmediate = dId >> 8;
                         dId = dId & 0x000000ff;
-                        if (dId == id) {
-                            immediate = dImmediate;
-                            setString(Integer.toString(id), Integer.toString(immediate));
+                        if (dId == getId()) {
+                            setImmediate(dImmediate);
+                            setString(Integer.toString(getId()), Integer.toString(getImmediate()));
                         }
                     }
 
-                    signalDin = portDin.getSignal();
+                    signalDin = getPortDin().getSignal();
                     StdLogicVector dIn = (StdLogicVector) signalDin.getValue();
 
-                    if (counter < immediate) {
+                    if (getCounter() < getImmediate()) {
                         if (rIn.is_1()) {
                             compute((int) dIn.getValue());
-                            counter++;
+                            setCounter(getCounter() + 1);
                         }
-                    } else if (decr < (int) Math.pow(2, 16)) {
+                    } else if (getDecr() < (int) Math.pow(2, 16)) {
                         StdLogicVector saida = new StdLogicVector(32);
-                        saida.setValue(histogram[decr]);			//aqui ocorre a chamada para a computação da saída.
+                        saida.setValue(getHistogram()[getDecr()]);			//aqui ocorre a chamada para a computação da saída.
                         vector = saida.copy();
                         time = simulator.getSimTime() + delay;
-                        simulator.scheduleEvent(new SimEvent(signalDout, time, vector, portDout));
-                        if ((signalRout = portRout.getSignal()) != null) { // get output
+                        simulator.scheduleEvent(new SimEvent(signalDout, time, vector, getPortDout()));
+                        if ((signalRout = getPortRout().getSignal()) != null) { // get output
                             rOut = new StdLogic1164(3);
                             time = simulator.getSimTime() + delay;
-                            simulator.scheduleEvent(SimEvent1164.createNewSimEvent(signalRout, time, rOut, portRout));
+                            simulator.scheduleEvent(SimEvent1164.createNewSimEvent(signalRout, time, rOut, getPortRout()));
                         }
-                        decr++;
+                        setDecr(getDecr() + 1);
                     } else {
-                        if ((signalRout = portRout.getSignal()) != null) { // get output
+                        if ((signalRout = getPortRout().getSignal()) != null) { // get output
                             rOut = new StdLogic1164(2);
                             time = simulator.getSimTime() + delay;
-                            simulator.scheduleEvent(SimEvent1164.createNewSimEvent(signalRout, time, rOut, portRout));
+                            simulator.scheduleEvent(SimEvent1164.createNewSimEvent(signalRout, time, rOut, getPortRout()));
                         }
                     }
                 } else {
-                    if ((signalRout = portRout.getSignal()) != null) { // get output
+                    if ((signalRout = getPortRout().getSignal()) != null) { // get output
                         rOut = new StdLogic1164(2);
                         time = simulator.getSimTime() + delay;
-                        simulator.scheduleEvent(SimEvent1164.createNewSimEvent(signalRout, time, rOut, portRout));
+                        simulator.scheduleEvent(SimEvent1164.createNewSimEvent(signalRout, time, rOut, getPortRout()));
                     }
                     notCompute();
                 }
             }
         }
+    }
+
+    /**
+     * @return the histogram
+     */
+    public int[] getHistogram() {
+        return histogram;
+    }
+
+    /**
+     * @param histogram the histogram to set
+     */
+    public void setHistogram(int[] histogram) {
+        this.setHistogram(histogram);
+    }
+
+    /**
+     * @return the counter
+     */
+    public int getCounter() {
+        return counter;
+    }
+
+    /**
+     * @param counter the counter to set
+     */
+    public void setCounter(int counter) {
+        this.counter = counter;
+    }
+
+    /**
+     * @return the decr
+     */
+    public int getDecr() {
+        return decr;
+    }
+
+    /**
+     * @param decr the decr to set
+     */
+    public void setDecr(int decr) {
+        this.decr = decr;
+    }
+
+    /**
+     * @return the NUMBITS
+     */
+    public int getNUMBITS() {
+        return NUMBITS;
+    }
+
+    /**
+     * @param NUMBITS the NUMBITS to set
+     */
+    public void setNUMBITS(int NUMBITS) {
+        this.NUMBITS = NUMBITS;
     }
 }

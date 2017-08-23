@@ -47,8 +47,8 @@ public class Merge extends GenericBin {
         Signal signalDin1 = null, signalDin2 = null, signalDout = null;
 
         //código para tick_up e Tick_down
-        if ((signalClk = portClk.getSignal()) != null) {
-            SignalStdLogic1164 tick = (SignalStdLogic1164) portClk.getSignal();
+        if ((signalClk = getPortClk().getSignal()) != null) {
+            SignalStdLogic1164 tick = (SignalStdLogic1164) getPortClk().getSignal();
             if (tick.hasRisingEdge()) {
                 tickUp();
             } else if (tick.hasFallingEdge()) {
@@ -59,57 +59,57 @@ public class Merge extends GenericBin {
 
         boolean isX = false;
 
-        if ((signalClk = portClk.getSignal()) == null) {
+        if ((signalClk = getPortClk().getSignal()) == null) {
             isX = true;
-        } else if ((signalRst = portRst.getSignal()) == null) {
+        } else if ((signalRst = getPortRst().getSignal()) == null) {
             isX = true;
-        } else if ((signalEn = portEn.getSignal()) == null) {
+        } else if ((signalEn = getPortEn().getSignal()) == null) {
             isX = true;
-        } else if ((signalRin1 = portRin1.getSignal()) == null) {
+        } else if ((signalRin1 = getPortRin1().getSignal()) == null) {
             isX = true;
-        } else if ((signalRin2 = portRin2.getSignal()) == null) {
+        } else if ((signalRin2 = getPortRin2().getSignal()) == null) {
             isX = true;
-        } else if ((signalDin1 = portDin1.getSignal()) == null) {
+        } else if ((signalDin1 = getPortDin1().getSignal()) == null) {
             isX = true;
-        } else if ((signalDin2 = portDin2.getSignal()) == null) {
+        } else if ((signalDin2 = getPortDin2().getSignal()) == null) {
             isX = true;
-        } else if ((signalDout = portDout.getSignal()) == null) {
+        } else if ((signalDout = getPortDout().getSignal()) == null) {
             isX = true;
         }
 
-        StdLogic1164 valueRst = portRst.getValueOrU();
+        StdLogic1164 valueRst = getPortRst().getValueOrU();
         StdLogic1164 rOut;
 
         if (isX || valueRst.is_1()) {
             reseted();
 
             //para portDout
-            if ((signalDout = portDout.getSignal()) != null) { // get output
+            if ((signalDout = getPortDout().getSignal()) != null) { // get output
                 vector = vector_UUU.copy();
                 time = simulator.getSimTime() + delay;
-                simulator.scheduleEvent(new SimEvent(signalDout, time, vector, portDout));
+                simulator.scheduleEvent(new SimEvent(signalDout, time, vector, getPortDout()));
             }
 
             //para portRout
-            if ((signalRout = portRout.getSignal()) != null) { // get output
+            if ((signalRout = getPortRout().getSignal()) != null) { // get output
                 rOut = new StdLogic1164(2);
                 time = simulator.getSimTime() + delay;
-                simulator.scheduleEvent(SimEvent1164.createNewSimEvent(signalRout, time, rOut, portRout));
+                simulator.scheduleEvent(SimEvent1164.createNewSimEvent(signalRout, time, rOut, getPortRout()));
             }
         } else {
 
-            SignalStdLogic1164 clk = (SignalStdLogic1164) portClk.getSignal();
-            StdLogic1164 en = portEn.getValueOrU();
-            StdLogic1164 rIn1 = portRin1.getValueOrU();
-            StdLogic1164 rIn2 = portRin2.getValueOrU();
+            SignalStdLogic1164 clk = (SignalStdLogic1164) getPortClk().getSignal();
+            StdLogic1164 en = getPortEn().getValueOrU();
+            StdLogic1164 rIn1 = getPortRin1().getValueOrU();
+            StdLogic1164 rIn2 = getPortRin2().getValueOrU();
 
             if (en.is_1()) {
                 if (clk.hasRisingEdge()) {
 
-                    signalDin1 = portDin1.getSignal();
+                    signalDin1 = getPortDin1().getSignal();
                     StdLogicVector dIn1 = (StdLogicVector) signalDin1.getValue();
 
-                    signalDin2 = portDin2.getSignal();
+                    signalDin2 = getPortDin2().getSignal();
                     StdLogicVector dIn2 = (StdLogicVector) signalDin2.getValue();
 
                     StdLogicVector saida = new StdLogicVector(32);
@@ -118,27 +118,27 @@ public class Merge extends GenericBin {
                         saida.setValue(compute((int) dIn1.getValue(), (int) dIn2.getValue()));//aqui ocorre a chamada para a computação da saída.
                         vector = saida.copy();
                         time = simulator.getSimTime() + delay;
-                        simulator.scheduleEvent(new SimEvent(signalDout, time, vector, portDout));
-                        if ((signalRout = portRout.getSignal()) != null) { // get output
+                        simulator.scheduleEvent(new SimEvent(signalDout, time, vector, getPortDout()));
+                        if ((signalRout = getPortRout().getSignal()) != null) { // get output
                             rOut = new StdLogic1164(3);
                             time = simulator.getSimTime() + delay;
-                            simulator.scheduleEvent(SimEvent1164.createNewSimEvent(signalRout, time, rOut, portRout));
+                            simulator.scheduleEvent(SimEvent1164.createNewSimEvent(signalRout, time, rOut, getPortRout()));
                         }
                     } else if (rIn2.is_1()) {
                         saida.setValue(compute((int) dIn2.getValue(), (int) dIn1.getValue()));//aqui ocorre a chamada para a computação da saída.
                         vector = saida.copy();
                         time = simulator.getSimTime() + delay;
-                        simulator.scheduleEvent(new SimEvent(signalDout, time, vector, portDout));
-                        if ((signalRout = portRout.getSignal()) != null) { // get output
+                        simulator.scheduleEvent(new SimEvent(signalDout, time, vector, getPortDout()));
+                        if ((signalRout = getPortRout().getSignal()) != null) { // get output
                             rOut = new StdLogic1164(3);
                             time = simulator.getSimTime() + delay;
-                            simulator.scheduleEvent(SimEvent1164.createNewSimEvent(signalRout, time, rOut, portRout));
+                            simulator.scheduleEvent(SimEvent1164.createNewSimEvent(signalRout, time, rOut, getPortRout()));
                         }
                     } else {
-                        if ((signalRout = portRout.getSignal()) != null) { // get output
+                        if ((signalRout = getPortRout().getSignal()) != null) { // get output
                             rOut = new StdLogic1164(2);
                             time = simulator.getSimTime() + delay;
-                            simulator.scheduleEvent(SimEvent1164.createNewSimEvent(signalRout, time, rOut, portRout));
+                            simulator.scheduleEvent(SimEvent1164.createNewSimEvent(signalRout, time, rOut, getPortRout()));
                         }
                         notCompute();
                     }
