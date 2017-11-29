@@ -646,7 +646,7 @@ def make_component_accumulator(name, operation, initvalue):
     dout = m.OutputReg('dout', N)
     acc = m.Reg('acc', N)
     immediate = m.Reg('immediate', 24)
-    count = m.Reg('count', 25)
+    count = m.Reg('count', 24)
     m.Always(Posedge(clk), Posedge(rst))(
         If(rst)(
             rout(Int(0, rout.width, 10)),
@@ -773,7 +773,7 @@ def make_branch_immediate(name, operation):
     din = m.Input('din', N)
     rif = m.OutputReg('ifout', 1)
     relse = m.OutputReg('elseout', 1)
-    immediate = m.Reg('immediate', 1)
+    immediate = m.Reg('immediate', 24)
     m.Always(Posedge(clk), Posedge(rst))(
         If(rst)(
             rif(0),
