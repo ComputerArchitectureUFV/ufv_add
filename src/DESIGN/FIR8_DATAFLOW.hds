@@ -1,0 +1,67 @@
+# hades.models.Design file
+#  
+[name] fir8
+[components]
+add.dataflow.sync.In1 in 6000 3600 @N 1001 16 1.0E-8 1 n
+add.dataflow.sync.MulI i9 11400 21600 @N 1001 16 3 1.0E-8 i
+add.dataflow.sync.MulI i8 11400 18000 @N 1001 16 4 1.0E-8 i
+add.dataflow.sync.MulI i7 11400 14400 @N 1001 16 5 1.0E-8 i
+add.dataflow.sync.Add i17 39000 27600 @N 1001 16 1.0E-8 b
+add.dataflow.sync.MulI i6 11400 10800 @N 1001 16 6 1.0E-8 i
+add.dataflow.sync.Add i16 35400 24000 @N 1001 16 1.0E-8 b
+add.dataflow.sync.MulI i5 11400 7200 @N 1001 16 7 1.0E-8 i
+add.dataflow.sync.Add i15 31800 20400 @N 1001 16 1.0E-8 b
+add.dataflow.sync.Add i14 28200 16800 @N 1001 16 1.0E-8 b
+add.dataflow.sync.Add i13 24600 13200 @N 1001 16 1.0E-8 b
+add.dataflow.sync.Register i2 13800 3600 @N 1001 16 1.0E-8 u
+add.dataflow.sync.Add i12 21000 9600 @N 1001 16 1.0E-8 b
+add.dataflow.sync.MulI i1 11400 3600 @N 1001 16 8 1.0E-8 i
+add.dataflow.sync.MulI i11 11400 28800 @N 1001 16 1 1.0E-8 i
+add.dataflow.sync.Add i0 17400 3600 @N 1001 16 1.0E-8 b
+add.dataflow.sync.MulI i10 11400 25200 @N 1001 16 2 1.0E-8 i
+add.dataflow.sync.Out1 out 42000 27600 @N 1001 16 1.0E-8 1 n
+hades.models.io.Ipin reset 4200 7200 @N 1001 null 1
+hades.models.io.ClockGen clock 1800 8400 @N 1001 1.0 0.5 0.0 null
+[end components]
+[signals]
+hades.signals.SignalStdLogic1164 clock_wire 34 clock clk in clk i1 clk i10 clk i9 clk i9 clk i8 clk i8 clk i7 clk i7 clk i6 clk i6 clk i5 clk i5 clk i1 clk i1 clk i2 clk i2 clk i0 clk i0 clk i12 clk i12 clk i13 clk i13 clk i14 clk i14 clk i15 clk i15 clk i16 clk i16 clk i17 clk i11 clk i17 clk out clk 0 0
+hades.signals.SignalStdLogic1164 rdy_wire 2 out rdy in rdy 0 0 
+hades.signals.SignalStdLogicVector n34 16 2 i17 dout out din1 1 2 40800 28800 42000 28800 0 
+hades.signals.SignalStdLogic1164 n33 2 out rin1 i17 rout 1 2 42000 28200 40800 28200 0 
+hades.signals.SignalStdLogic1164 n32 2 i17 rin1 i16 rout 3 2 39000 28200 38400 28200 2 38400 28200 38400 24600 2 38400 24600 37200 24600 0 
+hades.signals.SignalStdLogicVector n31 16 2 i16 dout i17 din1 3 2 37200 25200 37800 25200 2 37800 25200 37800 28800 2 37800 28800 39000 28800 0 
+hades.signals.SignalStdLogic1164 n30 2 i11 rout i17 rin2 1 2 13200 29400 39000 29400 0 
+hades.signals.SignalStdLogic1164 reset_wire 19 reset Y i10 rst i9 rst i8 rst i7 rst i6 rst i5 rst i1 rst i11 rst i17 rst out rst i16 rst i15 rst i14 rst i13 rst i12 rst i0 rst i2 rst in rst 0 0 
+hades.signals.SignalStdLogicVector n29 16 2 i11 dout i17 din2 1 2 39000 30000 13200 30000 0 
+hades.signals.SignalStdLogicVector n28 16 2 i15 dout i16 din1 3 2 33600 21600 34200 21600 2 34200 21600 34200 25200 2 34200 25200 35400 25200 0 
+hades.signals.SignalStdLogic1164 n27 2 i16 rin1 i15 rout 3 2 35400 24600 34800 24600 2 34800 24600 34800 21000 2 34800 21000 33600 21000 0 
+hades.signals.SignalStdLogicVector n26 16 2 i10 dout i16 din2 1 2 13200 26400 35400 26400 0 
+hades.signals.SignalStdLogic1164 n25 2 i10 rout i16 rin2 1 2 35400 25800 13200 25800 0 
+hades.signals.SignalStdLogic1164 n24 2 i15 rin1 i14 rout 3 2 31800 21000 31200 21000 2 31200 21000 31200 17400 2 31200 17400 30000 17400 0 
+hades.signals.SignalStdLogicVector n23 16 2 i14 dout i15 din1 3 2 30000 18000 30600 18000 2 30600 18000 30600 21600 2 30600 21600 31800 21600 0 
+hades.signals.SignalStdLogicVector n22 16 2 i9 dout i15 din2 1 2 13200 22800 31800 22800 0 
+hades.signals.SignalStdLogic1164 n21 2 i9 rout i15 rin2 1 2 31800 22200 13200 22200 0 
+hades.signals.SignalStdLogic1164 n20 2 i14 rin1 i13 rout 3 2 28200 17400 27600 17400 2 27600 17400 27600 13800 2 27600 13800 26400 13800 0 
+hades.signals.SignalStdLogic1164 en_wire 18 in en i11 en i10 en i9 en i8 en i7 en i6 en i5 en i1 en i17 en i16 en i15 en i14 en i13 en i12 en i0 en i2 en out en 0 0 
+hades.signals.SignalStdLogicVector n9 16 2 i6 dout i12 din2 1 2 21000 12000 13200 12000 0 
+hades.signals.SignalStdLogicVector n8 16 2 i5 dout i0 din2 3 2 17400 6000 16800 6000 2 16800 6000 16800 8400 2 16800 8400 13200 8400 0 
+hades.signals.SignalStdLogic1164 n7 2 i5 rout i0 rin2 3 2 17400 5400 16200 5400 2 16200 5400 16200 7800 2 16200 7800 13200 7800 0 
+hades.signals.SignalStdLogic1164 n6 2 i2 rout i0 rin1 1 2 17400 4200 15600 4200 0 
+hades.signals.SignalStdLogicVector n5 16 2 i2 dout i0 din1 1 2 15600 4800 17400 4800 0 
+hades.signals.SignalStdLogicVector n4 16 2 i1 dout i2 din 1 2 13200 4800 13800 4800 0 
+hades.signals.SignalStdLogicVector n3 32 9 in dconf i10 dconf i9 dconf i8 dconf i7 dconf i6 dconf i1 dconf i11 dconf i5 dconf 16 2 11400 27000 9000 27000 2 11400 23400 9000 23400 2 11400 19800 9000 19800 2 11400 16200 9000 16200 2 11400 12600 9000 12600 2 11400 5400 9000 5400 2 11400 30600 9000 30600 2 11400 9000 9000 9000 2 9000 9000 9000 5400 2 9000 5400 7800 5400 2 9000 9000 9000 12600 2 9000 12600 9000 16200 2 9000 16200 9000 19800 2 9000 19800 9000 23400 2 9000 30600 9000 27000 2 9000 23400 9000 27000 7 9000 5400 9000 12600 9000 19800 9000 27000 9000 16200 9000 23400 9000 9000 
+hades.signals.SignalStdLogic1164 n2 9 in rout1 i10 rin i9 rin i8 rin i7 rin i6 rin i11 rin i5 rin i1 rin 17 2 11400 25800 10200 25800 2 11400 22200 10200 22200 2 11400 18600 10200 18600 2 11400 15000 10200 15000 2 11400 11400 10200 11400 2 11400 29400 10200 29400 2 11400 7800 10800 7800 2 10800 7800 10200 7800 2 10200 7800 10200 4200 2 7800 4200 10200 4200 2 11400 4200 10200 4200 2 10200 7800 10200 11400 2 10200 11400 10200 15000 2 10200 15000 10200 18600 2 10200 18600 10200 22200 2 10200 29400 10200 25800 2 10200 22200 10200 25800 7 10200 15000 10200 4200 10200 22200 10200 7800 10200 25800 10200 18600 10200 11400 
+hades.signals.SignalStdLogicVector n1 16 9 in dout1 i5 din i6 din i7 din i10 din i8 din i9 din i11 din i1 din 16 2 11400 8400 9600 8400 2 11400 12000 9600 12000 2 11400 15600 9600 15600 2 11400 26400 9600 26400 2 11400 19200 9600 19200 2 11400 22800 9600 22800 2 11400 30000 9600 30000 2 7800 4800 9600 4800 2 11400 4800 9600 4800 2 9600 22800 9600 19200 2 9600 30000 9600 26400 2 9600 22800 9600 26400 2 9600 19200 9600 15600 2 9600 15600 9600 12000 2 9600 4800 9600 8400 2 9600 12000 9600 8400 7 9600 26400 9600 8400 9600 12000 9600 19200 9600 15600 9600 4800 9600 22800 
+hades.signals.SignalStdLogic1164 n0 2 i1 rout i2 rin 1 2 13800 4200 13200 4200 0 
+hades.signals.SignalStdLogicVector n19 16 2 i13 dout i14 din1 3 2 26400 14400 27000 14400 2 27000 14400 27000 18000 2 27000 18000 28200 18000 0 
+hades.signals.SignalStdLogic1164 n18 2 i13 rin1 i12 rout 3 2 24600 13800 24000 13800 2 24000 13800 24000 10200 2 24000 10200 22800 10200 0 
+hades.signals.SignalStdLogicVector n17 16 2 i12 dout i13 din1 3 2 22800 10800 23400 10800 2 23400 10800 23400 14400 2 23400 14400 24600 14400 0 
+hades.signals.SignalStdLogicVector n16 16 2 i8 dout i14 din2 1 2 13200 19200 28200 19200 0 
+hades.signals.SignalStdLogic1164 n15 2 i8 rout i14 rin2 1 2 28200 18600 13200 18600 0 
+hades.signals.SignalStdLogicVector n14 16 2 i7 dout i13 din2 1 2 24600 15600 13200 15600 0 
+hades.signals.SignalStdLogic1164 n13 2 i7 rout i13 rin2 1 2 13200 15000 24600 15000 0 
+hades.signals.SignalStdLogic1164 n12 2 i0 rout i12 rin1 3 2 19200 4200 20400 4200 2 20400 4200 20400 10200 2 20400 10200 21000 10200 0 
+hades.signals.SignalStdLogicVector n11 16 2 i0 dout i12 din1 3 2 21000 10800 19800 10800 2 19800 10800 19800 4800 2 19800 4800 19200 4800 0 
+hades.signals.SignalStdLogic1164 n10 2 i6 rout i12 rin2 1 2 13200 11400 21000 11400 0 
+[end signals]
+[end]

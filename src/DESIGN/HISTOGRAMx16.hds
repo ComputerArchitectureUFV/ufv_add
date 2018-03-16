@@ -1,0 +1,142 @@
+# hades.models.Design file
+#
+[name] dataflow
+[components]
+hades.models.io.ClockGen clock -4800 -2400 @N 1001 1.0 0.5 0.0 null
+hades.models.io.Ipin reset -4800 4800 @N 1001 null 1
+add.dataflow.sync.In16 in 0 0 @N 1001 16 1.0E-8 16 n
+add.dataflow.sync.Histogram hist1 2400 0 @N 1001 16 1 1.0E-8 i
+add.dataflow.sync.Histogram hist2 4800 0 @N 1001 16 1 1.0E-8 i
+add.dataflow.sync.Histogram hist3 7200 0 @N 1001 16 1 1.0E-8 i
+add.dataflow.sync.Histogram hist4 9600 0 @N 1001 16 1 1.0E-8 i
+add.dataflow.sync.Histogram hist5 12000 0 @N 1001 16 1 1.0E-8 i
+add.dataflow.sync.Histogram hist6 14400 0 @N 1001 16 1 1.0E-8 i
+add.dataflow.sync.Histogram hist7 16800 0 @N 1001 16 1 1.0E-8 i
+add.dataflow.sync.Histogram hist8 19200 0 @N 1001 16 1 1.0E-8 i
+add.dataflow.sync.Histogram hist9 21600 0 @N 1001 16 1 1.0E-8 i
+add.dataflow.sync.Histogram hist10 24000 0 @N 1001 16 1 1.0E-8 i
+add.dataflow.sync.Histogram hist11 26400 0 @N 1001 16 1 1.0E-8 i
+add.dataflow.sync.Histogram hist12 28800 0 @N 1001 16 1 1.0E-8 i
+add.dataflow.sync.Histogram hist13 31200 0 @N 1001 16 1 1.0E-8 i
+add.dataflow.sync.Histogram hist14 33600 0 @N 1001 16 1 1.0E-8 i
+add.dataflow.sync.Histogram hist15 36000 0 @N 1001 16 1 1.0E-8 i
+add.dataflow.sync.Histogram hist16 38400 0 @N 1001 16 1 1.0E-8 i
+add.dataflow.sync.Add add1 40800 0 @N 1001 16 1.0E-8 b
+add.dataflow.sync.Add add2 43200 0 @N 1001 16 1.0E-8 b
+add.dataflow.sync.Add add3 45600 0 @N 1001 16 1.0E-8 b
+add.dataflow.sync.Add add4 48000 0 @N 1001 16 1.0E-8 b
+add.dataflow.sync.Add add5 50400 0 @N 1001 16 1.0E-8 b
+add.dataflow.sync.Add add6 52800 0 @N 1001 16 1.0E-8 b
+add.dataflow.sync.Add add7 55200 0 @N 1001 16 1.0E-8 b
+add.dataflow.sync.Add add8 57600 0 @N 1001 16 1.0E-8 b
+add.dataflow.sync.Add add9 60000 0 @N 1001 16 1.0E-8 b
+add.dataflow.sync.Add add10 62400 0 @N 1001 16 1.0E-8 b
+add.dataflow.sync.Add add11 64800 0 @N 1001 16 1.0E-8 b
+add.dataflow.sync.Add add12 67200 0 @N 1001 16 1.0E-8 b
+add.dataflow.sync.Add add13 69600 0 @N 1001 16 1.0E-8 b
+add.dataflow.sync.Add add14 72000 0 @N 1001 16 1.0E-8 b
+add.dataflow.sync.Add add15 74400 0 @N 1001 16 1.0E-8 b
+add.dataflow.sync.Out1 out 76800 0 @N 1001 16 1.0E-8 1 n
+[end components]
+[signals]
+hades.signals.SignalStdLogic1164 wrdy 2 in rdy out rdy 0 0
+hades.signals.SignalStdLogic1164 wclk 35 clock clk in clk add1 clk add2 clk add3 clk add3 clk add4 clk add5 clk add6 clk add7 clk add8 clk add9 clk add10 clk add11 clk add12 clk add13 clk add14 clk add15 clk hist1 clk hist2 clk hist3 clk hist4 clk hist5 clk hist6 clk hist7 clk hist8 clk hist9 clk hist10 clk hist11 clk hist12 clk hist13 clk hist14 clk hist15 clk hist16 clk out clk  0 0
+hades.signals.SignalStdLogic1164 wrst 35 reset Y in rst add1 rst add2 rst add3 rst add3 rst add4 rst add5 rst add6 rst add7 rst add8 rst add9 rst add10 rst add11 rst add12 rst add13 rst add14 rst add15 rst hist1 rst hist2 rst hist3 rst hist4 rst hist5 rst hist6 rst hist7 rst hist8 rst hist9 rst hist10 rst hist11 rst hist12 rst hist13 rst hist14 rst hist15 rst hist16 rst out rst  0 0
+hades.signals.SignalStdLogic1164 wen 34 in en add1 en add2 en add3 en add3 en add4 en add5 en add6 en add7 en add8 en add9 en add10 en add11 en add12 en add13 en add14 en add15 en hist1 en hist2 en hist3 en hist4 en hist5 en hist6 en hist7 en hist8 en hist9 en hist10 en hist11 en hist12 en hist13 en hist14 en hist15 en hist16 en out en 0 0
+hades.signals.SignalStdLogicVector w0 32 18 in dconf hist1 dconf hist2 dconf hist3 dconf hist31 dconf hist4 dconf hist5 dconf hist6 dconf hist7 dconf hist8 dconf hist9 dconf hist10 dconf hist11 dconf hist12 dconf hist13 dconf hist14 dconf hist15 dconf hist16 dconf  0 0
+hades.signals.SignalStdLogic1164 w1 2 add15 rout out rin1 0 0
+hades.signals.SignalStdLogicVector w2 16 2 add15 dout out din1 0 0
+hades.signals.SignalStdLogic1164 w3 2 in rout1 hist1 rin 0 0
+hades.signals.SignalStdLogicVector w4 16 2 in dout1 hist1 din 0 0
+hades.signals.SignalStdLogic1164 w5 2 in rout2 hist2 rin 0 0
+hades.signals.SignalStdLogicVector w6 16 2 in dout2 hist2 din 0 0
+hades.signals.SignalStdLogic1164 w7 2 in rout3 hist3 rin 0 0
+hades.signals.SignalStdLogicVector w8 16 2 in dout3 hist3 din 0 0
+hades.signals.SignalStdLogic1164 w9 2 in rout4 hist4 rin 0 0
+hades.signals.SignalStdLogicVector w10 16 2 in dout4 hist4 din 0 0
+hades.signals.SignalStdLogic1164 w11 2 in rout5 hist5 rin 0 0
+hades.signals.SignalStdLogicVector w12 16 2 in dout5 hist5 din 0 0
+hades.signals.SignalStdLogic1164 w13 2 in rout6 hist6 rin 0 0
+hades.signals.SignalStdLogicVector w14 16 2 in dout6 hist6 din 0 0
+hades.signals.SignalStdLogic1164 w15 2 in rout7 hist7 rin 0 0
+hades.signals.SignalStdLogicVector w16 16 2 in dout7 hist7 din 0 0
+hades.signals.SignalStdLogic1164 w17 2 in rout8 hist8 rin 0 0
+hades.signals.SignalStdLogicVector w18 16 2 in dout8 hist8 din 0 0
+hades.signals.SignalStdLogic1164 w19 2 in rout9 hist9 rin 0 0
+hades.signals.SignalStdLogicVector w20 16 2 in dout9 hist9 din 0 0
+hades.signals.SignalStdLogic1164 w21 2 in rout10 hist10 rin 0 0
+hades.signals.SignalStdLogicVector w22 16 2 in dout10 hist10 din 0 0
+hades.signals.SignalStdLogic1164 w23 2 in rout11 hist11 rin 0 0
+hades.signals.SignalStdLogicVector w24 16 2 in dout11 hist11 din 0 0
+hades.signals.SignalStdLogic1164 w25 2 in rout12 hist12 rin 0 0
+hades.signals.SignalStdLogicVector w26 16 2 in dout12 hist12 din 0 0
+hades.signals.SignalStdLogic1164 w27 2 in rout13 hist13 rin 0 0
+hades.signals.SignalStdLogicVector w28 16 2 in dout13 hist13 din 0 0
+hades.signals.SignalStdLogic1164 w29 2 in rout14 hist14 rin 0 0
+hades.signals.SignalStdLogicVector w30 16 2 in dout14 hist14 din 0 0
+hades.signals.SignalStdLogic1164 w31 2 in rout15 hist15 rin 0 0
+hades.signals.SignalStdLogicVector w32 16 2 in dout15 hist15 din 0 0
+hades.signals.SignalStdLogic1164 w33 2 in rout16 hist16 rin 0 0
+hades.signals.SignalStdLogicVector w34 16 2 in dout16 hist16 din 0 0
+hades.signals.SignalStdLogic1164 w35 2 hist1 rout add1 rin1 0 0
+hades.signals.SignalStdLogicVector w36 16 2 hist1 dout add1 din1 0 0
+hades.signals.SignalStdLogic1164 w37 2 hist2 rout add1 rin2 0 0
+hades.signals.SignalStdLogicVector w38 16 2 hist2 dout add1 din2 0 0
+hades.signals.SignalStdLogic1164 w39 2 hist3 rout add2 rin1 0 0
+hades.signals.SignalStdLogicVector w40 16 2 hist3 dout add2 din1 0 0
+hades.signals.SignalStdLogic1164 w41 2 hist4 rout add2 rin2 0 0
+hades.signals.SignalStdLogicVector w42 16 2 hist4 dout add2 din2 0 0
+hades.signals.SignalStdLogic1164 w43 2 hist5 rout add3 rin1 0 0
+hades.signals.SignalStdLogicVector w44 16 2 hist5 dout add3 din1 0 0
+hades.signals.SignalStdLogic1164 w45 2 hist6 rout add3 rin2 0 0
+hades.signals.SignalStdLogicVector w46 16 2 hist6 dout add3 din2 0 0
+hades.signals.SignalStdLogic1164 w47 2 hist7 rout add4 rin1 0 0
+hades.signals.SignalStdLogicVector w48 16 2 hist7 dout add4 din1 0 0
+hades.signals.SignalStdLogic1164 w49 2 hist8 rout add4 rin2 0 0
+hades.signals.SignalStdLogicVector w50 16 2 hist8 dout add4 din2 0 0
+hades.signals.SignalStdLogic1164 w51 2 hist9 rout add5 rin1 0 0
+hades.signals.SignalStdLogicVector w52 16 2 hist9 dout add5 din1 0 0
+hades.signals.SignalStdLogic1164 w53 2 hist10 rout add5 rin2 0 0
+hades.signals.SignalStdLogicVector w54 16 2 hist10 dout add5 din2 0 0
+hades.signals.SignalStdLogic1164 w55 2 hist11 rout add6 rin1 0 0
+hades.signals.SignalStdLogicVector w56 16 2 hist11 dout add6 din1 0 0
+hades.signals.SignalStdLogic1164 w57 2 hist12 rout add6 rin2 0 0
+hades.signals.SignalStdLogicVector w58 16 2 hist12 dout add6 din2 0 0
+hades.signals.SignalStdLogic1164 w59 2 hist13 rout add7 rin1 0 0
+hades.signals.SignalStdLogicVector w60 16 2 hist13 dout add7 din1 0 0
+hades.signals.SignalStdLogic1164 w61 2 hist14 rout add7 rin2 0 0
+hades.signals.SignalStdLogicVector w62 16 2 hist14 dout add7 din2 0 0
+hades.signals.SignalStdLogic1164 w63 2 hist15 rout add8 rin1 0 0
+hades.signals.SignalStdLogicVector w64 16 2 hist15 dout add8 din1 0 0
+hades.signals.SignalStdLogic1164 w65 2 hist16 rout add8 rin2 0 0
+hades.signals.SignalStdLogicVector w66 16 2 hist16 dout add8 din2 0 0
+hades.signals.SignalStdLogic1164 w67 2 add1 rout add9 rin1 0 0
+hades.signals.SignalStdLogicVector w68 16 2 add1 dout add9 din1 0 0
+hades.signals.SignalStdLogic1164 w69 2 add2 rout add9 rin2 0 0
+hades.signals.SignalStdLogicVector w70 16 2 add2 dout add9 din2 0 0
+hades.signals.SignalStdLogic1164 w71 2 add3 rout add10 rin1 0 0
+hades.signals.SignalStdLogicVector w72 16 2 add3 dout add10 din1 0 0
+hades.signals.SignalStdLogic1164 w73 2 add4 rout add10 rin2 0 0
+hades.signals.SignalStdLogicVector w74 16 2 add4 dout add10 din2 0 0
+hades.signals.SignalStdLogic1164 w75 2 add5 rout add11 rin1 0 0
+hades.signals.SignalStdLogicVector w76 16 2 add5 dout add11 din1 0 0
+hades.signals.SignalStdLogic1164 w77 2 add6 rout add11 rin2 0 0
+hades.signals.SignalStdLogicVector w78 16 2 add6 dout add11 din2 0 0
+hades.signals.SignalStdLogic1164 w79 2 add7 rout add12 rin1 0 0
+hades.signals.SignalStdLogicVector w80 16 2 add7 dout add12 din1 0 0
+hades.signals.SignalStdLogic1164 w81 2 add8 rout add12 rin2 0 0
+hades.signals.SignalStdLogicVector w82 16 2 add8 dout add12 din2 0 0
+hades.signals.SignalStdLogic1164 w83 2 add9 rout add13 rin1 0 0
+hades.signals.SignalStdLogicVector w84 16 2 add9 dout add13 din1 0 0
+hades.signals.SignalStdLogic1164 w85 2 add10 rout add13 rin2 0 0
+hades.signals.SignalStdLogicVector w86 16 2 add10 dout add13 din2 0 0
+hades.signals.SignalStdLogic1164 w87 2 add11 rout add14 rin1 0 0
+hades.signals.SignalStdLogicVector w88 16 2 add11 dout add14 din1 0 0
+hades.signals.SignalStdLogic1164 w89 2 add12 rout add14 rin2 0 0
+hades.signals.SignalStdLogicVector w90 16 2 add12 dout add14 din2 0 0
+hades.signals.SignalStdLogic1164 w91 2 add13 rout add15 rin1 0 0
+hades.signals.SignalStdLogicVector w92 16 2 add13 dout add15 din1 0 0
+hades.signals.SignalStdLogic1164 w93 2 add14 rout add15 rin2 0 0
+hades.signals.SignalStdLogicVector w94 16 2 add14 dout add15 din2 0 0
+[end signals]
+[end]
